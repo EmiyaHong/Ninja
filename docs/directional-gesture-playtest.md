@@ -1,5 +1,13 @@
 # 方向手势对战实验（2026-10-23）
 
+## 交互故障修复补记
+
+用户反馈“完全没法玩，按1无法回原模式”后，原版正常循环事件注入发现：纯 `physical_keycode` 输入和小键盘数字不受原 `event.keycode` 匹配支持。修复为全局 `_input` 优先物理键、逻辑键兜底、小键盘归一，识别后标记事件已处理；GUI获得焦点不再决定全局命令能否到达。原版主键切换及点击5后主键1在本次环境已能工作，不能把未复现的整个现场问题归因于GUI焦点。
+
+`tests/interaction_tests.gd` 可用 `Godot --path 项目目录 --script res://tests/interaction_tests.gd` 运行。它在正常process/真实时钟下通过事件分发点击实际按钮、注入按键和鼠标，不调用模式/重置函数。默认D3D12 Forward+与OpenGL Compatibility分别19项0失败，包含1→5→1、按钮焦点、物理数字键、小键盘、R/Esc、鼠标绝对刀尖恢复、空白处指令斩击、连续三次弹反、自然败北及恢复原参数。原规则回归265项仍通过。
+
+现场证据：`docs/screenshots/interaction-directional-real-clock.png`、`interaction-original-restored.png`；新日志在忽略的 `.mcp-tools/interaction-*.log`。未修改原combat_tuning、美术或刀光；原刀光3项过期失败仍在。此轮消除了上一轮受控时钟/停process的验证缺口，但仍是Godot事件注入，非用户键盘/IME/真实OS切窗验收。未找到遗留测试进程；实际F5配置和编辑器当前场景均为battle。用户现场是否完全恢复仍需反馈。
+
 状态：已实现，可试玩；未经过用户手感确认，未替代原控刀，也未决定 A/B 最终规则。
 
 ## 操作

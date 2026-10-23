@@ -253,9 +253,16 @@ func _notification(what: int) -> void:
 		if not paused and result.is_empty():
 			toggle_pause()
 
-func _unhandled_key_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		match event.keycode:
+		# Global game commands precede GUI focus and use keyboard position under IME.
+		if event.alt_pressed or event.ctrl_pressed or event.meta_pressed: return
+		var code: int = event.physical_keycode if event.physical_keycode != 0 else event.keycode
+		var keypad := {KEY_KP_1: KEY_1, KEY_KP_2: KEY_2, KEY_KP_3: KEY_3, KEY_KP_4: KEY_4, KEY_KP_5: KEY_5}
+		code = keypad.get(code, code)
+		if code not in [KEY_R, KEY_ESCAPE, KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_T, KEY_G, KEY_A, KEY_B, KEY_C]: return
+		get_viewport().set_input_as_handled()
+		match code:
 			KEY_R: restart()
 			KEY_ESCAPE: toggle_pause()
 			KEY_1: _switch_mode(0)
