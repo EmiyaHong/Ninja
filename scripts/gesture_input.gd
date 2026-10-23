@@ -4,6 +4,7 @@ signal moved(at: float)
 signal began
 signal ended
 
+var direct_control := true
 var held := false
 var enabled := true
 var samples: Array[Dictionary] = []
@@ -18,7 +19,7 @@ func reset(fade_trail: bool = false) -> void:
 	samples.clear()
 	motion_segment.clear()
 	blade_direction = Vector2.UP
-	if is_instance_valid(weapon):
+	if direct_control and is_instance_valid(weapon):
 		weapon.clear(rest, fade_trail)
 
 func _input(event: InputEvent) -> void:
@@ -30,7 +31,7 @@ func _input(event: InputEvent) -> void:
 			held = true
 			var point := _clamp_point(event.position)
 			samples.append({"p": point, "t": clock.call()})
-			weapon.follow(point, Vector2.ZERO, true)
+			if direct_control: weapon.follow(point, Vector2.ZERO, true)
 			began.emit() # Initial placement is deliberately never a motion event.
 		else:
 			reset(true)
@@ -44,7 +45,7 @@ func _input(event: InputEvent) -> void:
 		if not direction.is_zero_approx():
 			blade_direction = direction
 		samples.append({"p": point, "t": at})
-		weapon.follow(point, direction, true)
+		if direct_control: weapon.follow(point, direction, true)
 		# Combat needs only recent samples; the weapon retains the complete visible curve.
 		while samples.size() > 2 and float(samples[1].t) < at - 0.12:
 			samples.pop_front()

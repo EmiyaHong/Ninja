@@ -6,7 +6,7 @@ const Boss = preload("res://scripts/boss_controller.gd")
 const TUNING = preload("res://data/combat_tuning.tres")
 const ParryTrainer = preload("res://scripts/parry_trainer.gd")
 
-@export_enum("战斗", "自由练刀", "下劈训练", "木桩测试") var initial_mode := 0
+@export_enum("战斗", "自由练刀", "下劈训练", "木桩测试", "方向手势") var initial_mode := 0
 @export var initial_dummy_parry_training := false
 @export_enum("A 双向接招", "B 严格反向") var training_rule := 0
 @export_enum("同向三连 →→→", "交替三连 →←→") var training_pattern := 0
@@ -16,6 +16,9 @@ const ParryTrainer = preload("res://scripts/parry_trainer.gd")
 @export var player_weapon_scene: PackedScene = preload("res://scenes/player_weapon.tscn")
 @export_group("Gameplay hurtbox, independent of art")
 @export var boss_hurtbox_local := Rect2(-70, -100, 140, 214)
+const Directional = preload("res://scripts/directional_combat.gd")
+var directional: Node
+var original_tuning: Resource
 var tuning: Resource = TUNING
 var gesture: Node
 var boss: Node
@@ -80,6 +83,10 @@ func _ready() -> void:
 	training.knife_settled.connect(_on_training_result)
 	gesture.began.connect(_begin_training_gesture)
 	gesture.ended.connect(_cancel_training_gesture)
+	directional = Directional.new()
+	add_child(directional)
+	directional.battle = self
+	original_tuning = tuning
 	_build_hud()
 	mode = initial_mode
 	dummy_parry_training = initial_dummy_parry_training
@@ -115,9 +122,9 @@ func _build_hud() -> void:
 	buttons.position = Vector2(40, 112)
 	buttons.add_theme_constant_override("separation", 12)
 	root.add_child(buttons)
-	for index in range(4):
+	for index in range(5):
 		var button := Button.new()
-		button.text = ["1 战斗", "2 自由练刀", "3 下劈训练", "4 木桩测试"][index]
+		button.text = ["1 战斗", "2 自由练刀", "3 下劈训练", "4 木桩测试", "5 方向手势"][index]
 		button.pressed.connect(_switch_mode.bind(index))
 		buttons.add_child(button)
 	var restart_button := Button.new()
@@ -166,6 +173,10 @@ func _toggle_training_pattern() -> void:
 	_select_dummy_training(true)
 
 func _begin_training_gesture() -> void:
+	if mode == 4:
+		directional.used = false
+		directional.stroke = Vector2.ZERO
+		directional.last_at = -INF
 	if is_parry_training():
 		training.begin_gesture(gesture.samples.back().t)
 
@@ -191,6 +202,10 @@ func _switch_mode(value: int) -> void:
 	restart()
 
 func restart() -> void:
+	tuning = directional.settings if mode == 4 else original_tuning
+	boss.tuning = tuning
+	gesture.direct_control = mode != 4
+	directional.cancel()
 	paused = false
 	clock_offset = 0.0
 	player_hp = tuning.player_health
@@ -228,6 +243,7 @@ func toggle_pause() -> void:
 		pause_started = Time.get_ticks_usec() / 1000000.0
 		paused = true
 	gesture.reset()
+	directional.cancel()
 	_cancel_training_gesture()
 	gesture.enabled = not paused and result.is_empty()
 	_refresh_hud()
@@ -246,6 +262,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			KEY_2: _switch_mode(1)
 			KEY_3: _switch_mode(2)
 			KEY_4: _switch_mode(3)
+			KEY_5: _switch_mode(4)
 			KEY_T: _select_dummy_training(false)
 			KEY_G: _select_dummy_training(true)
 			KEY_A:
@@ -279,6 +296,7 @@ func _process(delta: float) -> void:
 				_finish("失败 · 按 R 重开")
 		elif transition == "restore":
 			posture = tuning.boss_posture
+	if mode == 4 and result.is_empty(): directional.step(now())
 	_update_boss_weapon()
 	effect = maxf(0.0, effect - delta)
 	_refresh_hud()
@@ -298,6 +316,9 @@ func _settle_motion(at: float) -> void:
 		training.handle_motion(at, gesture, minf(get_viewport_rect().size.x, get_viewport_rect().size.y))
 		_refresh_hud()
 		return
+	if mode == 4:
+		directional.handle_motion(at)
+		return
 	if at < next_action:
 		return
 	# Each result needs fresh movement after the previous result, even in one hold.
@@ -316,6 +337,9 @@ func _settle_motion(at: float) -> void:
 	# Empty swings do not start a cooldown. Parry remains spatially unrestricted.
 	if not parried and not BladeHitTest.swept_hits(gesture.motion_segment, player_weapon.blade_length, player_weapon.blade_width, boss_hurtbox()):
 		return
+	_resolve_attack(at, parried)
+
+func _resolve_attack(at: float, parried: bool) -> void:
 	settlement_count += 1
 	last_action_at = at
 	next_action = at + maxf(0.0, tuning.action_interval)
@@ -348,6 +372,7 @@ func _settle_motion(at: float) -> void:
 	queue_redraw()
 
 func _finish(text: String) -> void:
+	directional.cancel()
 	result = text
 	boss.resolved = true
 	boss.phase = "ended"
@@ -394,8 +419,8 @@ func _refresh_hud() -> void:
 		return
 	vulnerability.text = "易伤 ×%.1f\n剩余 %.2f 秒" % [tuning.broken_multiplier, maxf(0, boss.deadline - now())] if boss.phase == "broken" else "正常伤害 ×1.0"
 	vulnerability.modulate = Color("c2a0ff") if boss.phase == "broken" else Color("bac9dc")
-	hud.text = "%s   |   玩家生命 %.1f / %.1f\nBoss 生命 %.1f / %.1f    架势 %.1f / %.1f" % [["曲线挥刀 · 战斗", "曲线挥刀 · 自由练刀", "曲线挥刀 · 下劈训练", "曲线挥刀 · 木桩测试"][mode], player_hp, tuning.player_health, boss_hp, tuning.boss_health, posture, tuning.boss_posture]
-	var state := "划过 Boss 头部 / 身体造成伤害"
+	hud.text = "%s   |   玩家生命 %.1f / %.1f\nBoss 生命 %.1f / %.1f    架势 %.1f / %.1f" % [["曲线挥刀 · 战斗", "曲线挥刀 · 自由练刀", "曲线挥刀 · 下劈训练", "曲线挥刀 · 木桩测试", "方向手势 · 对战实验"][mode], player_hp, tuning.player_health, boss_hp, tuning.boss_health, posture, tuning.boss_posture]
+	var state := "空白处短划，飞剑自动斩向熊" if mode == 4 else "划过 Boss 头部 / 身体造成伤害"
 	var color := Color("bac9dc")
 	if mode == 1:
 		state = "自由画圆弧、S 形与折返\n白点是实际刀尖 · Boss 不攻击"
@@ -414,10 +439,14 @@ func _refresh_hud() -> void:
 		state = result
 	if paused:
 		state = "已暂停 · Esc 继续\n请重新按住左键开始挥刀"
+	if mode == 4: state += "\n任意空白处短划 · 自动锁定熊"
 	prompt.text = state
 	prompt.modulate = color
 	var required_distance: float = minf(get_viewport_rect().size.x, get_viewport_rect().size.y) * tuning.minimum_distance_ratio
 	detail.text = "按住左键持续挥刀，无需松开；实际划过 Boss 才普通命中。\n金色窗口反向划可弹反；需划≥%.1fpx / %.2fs（短边%.1f%%），间隔≥%.2fs。\n本次生命 -%.1f / 架势 -%.1f    %s    结算 %d · 弹反 %d · 受伤 %d\n1 战斗 · 2 自由练刀 · 3 下劈 · 4 木桩 · R 重置 · Esc 暂停" % [required_distance, tuning.local_window, tuning.minimum_distance_ratio * 100.0, maxf(0.0, tuning.action_interval), last_damage, last_posture_damage, "出刀冷却中" if gesture.held and now() < next_action else ("持续跟随中" if gesture.held else "未按住"), settlement_count, parry_count, hit_count]
+
+	if mode == 4:
+		detail.text = "5 方向手势：按住左键短划；折返或停顿0.12秒再划可连出。1 回原控刀\n独立参数：生命100 · 窗口0.20秒 · 容差35° · 距离短边2%% · 速度180px/s\n飞剑实际穿过目标才伤害；金色窗口新鲜反向划可取消普攻弹反。\n结算 %d · 弹反 %d · 受伤 %d · R 重开 · Esc 暂停" % [settlement_count, parry_count, hit_count]
 
 func _refresh_training_hud() -> void:
 	var at := now()
