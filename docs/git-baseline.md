@@ -36,3 +36,7 @@ git diff baseline-2026-10-23 -- scripts scenes data shaders
 安全查看旧版可导出到另一个目录：`git archive --format=zip --output=../Ninja-baseline-2026-10-23.zip baseline-2026-10-23`，解压后用 Godot 4.7.2 导入 project.godot，首次重新生成缓存。确认当前修改已备份后，才针对明确文件使用 `git restore --source baseline-2026-10-23 -- 路径`，这会覆盖该文件当前内容。不要使用 reset --hard 或 clean 清理尚未提交的视觉目标资料。
 
 本地 Git 提供历史版本，不替代异盘备份；没有创建远程仓库或推送。
+
+## 已创建的提交
+
+基线：`49f627e09330feaf84016d6e5d2c508e2be524e8`，标签 `baseline-2026-10-23`，683 文件。随后仅提交本段记录，不修改该基线标签。提交后仍未跟踪的视觉工作包括上述四个路径及新出现的 `docs/visual-target-prompts.md`；均留给主聊天完成后纳入，不把正在生成中的版本放进基线。
