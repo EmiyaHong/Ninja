@@ -1,0 +1,37 @@
+[gd_scene format=4 uid="uid://bq06hepkopoeu"]
+
+[ext_resource type="Script" uid="uid://d1iint8ds8aq2" path="res://scripts/battle_controller.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/player_view.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/boss_view.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://bq8rmtia2mbb1" path="res://scenes/player_weapon.tscn" id="4"]
+[ext_resource type="Script" uid="uid://l4s6xmcep01r" path="res://scripts/editor_stage_preview.gd" id="5"]
+[ext_resource type="Shader" uid="uid://cmegoc5a4h2tg" path="res://shaders/blade_trail.gdshader" id="6_6vh42"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4k1nj"]
+resource_local_to_scene = true
+shader = ExtResource("6_6vh42")
+shader_parameter/light_color = Color(0.78, 0.89, 0.91, 0.72)
+shader_parameter/samples = PackedVector4Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/sample_count = 0
+shader_parameter/clock_seconds = 0.0
+shader_parameter/fade_seconds = 0.22
+shader_parameter/visible_length = 320.0
+shader_parameter/stroke_distance = 0.0
+shader_parameter/trail_width = 32.0
+
+[node name="Battle" type="Node2D" unique_id=1497623861]
+script = ExtResource("1")
+
+[node name="EditorPreview" type="Node2D" parent="." unique_id=547820404]
+z_index = -100
+script = ExtResource("5")
+
+[node name="PlayerBody" parent="." unique_id=1343142302 instance=ExtResource("2")]
+position = Vector2(576, 578)
+
+[node name="BossBody" parent="." unique_id=1500516204 instance=ExtResource("3")]
+position = Vector2(576, 292)
+
+[node name="PlayerWeapon" parent="." unique_id=1152890531 instance=ExtResource("4")]
+z_index = 20
+trail_material = SubResource("ShaderMaterial_4k1nj")

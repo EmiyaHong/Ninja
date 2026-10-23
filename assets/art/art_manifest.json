@@ -1,0 +1,2209 @@
+{
+  "meta": {
+    "title": "Ninja 2D 动作游戏 · 美术素材清单",
+    "root": "res://assets/art",
+    "abs_root": "E:/Godot/Ninja/assets/art",
+    "godot": "4.7 (Forward+)",
+    "generated_at": "2026-10-22",
+    "asset_count": 84,
+    "total_size_mb": 47.8,
+    "human_doc": "README.md",
+    "layout": {
+      "cartoon/": "卡通厚涂风（苍爪熊 cangzhua）：stand / quad / attack",
+      "geometric/geobear/": "几何扁平风（几何熊 geobear）八视图 + 生成母图",
+      "geometric/ui_kit/boards/": "UI 定稿母板；archive/ 为历史稿",
+      "geometric/ui_kit/components/": "42 个透明 UI 组件",
+      "_tools/": "后处理脚本（配方，非资产）"
+    },
+    "reorganized_at": "2026-10-22 17:57",
+    "note": "目录已按画风重组；Godot 导入缓存已重建。"
+  },
+  "conventions": {
+    "character_filename": "cangzhua_<pose>_<NN>_<direction>.png  /  geobear_stand_<NN>_<direction>.png",
+    "action_filename": "<char>_<action>_fNN.png  +  <char>_<action>_sheet.png",
+    "ui_component_filename": "<type>_<name>[_<state>].png，type ∈ icon/bar/fx/arrow/btn/panel/plate/slider/toggle/checkbox/tabs/curve",
+    "direction_numbering": {
+      "1": "正面",
+      "2": "前右斜45°",
+      "3": "右侧面",
+      "4": "后右斜45°",
+      "5": "正背面",
+      "6": "后左斜45°",
+      "7": "左侧面",
+      "8": "前左斜45°"
+    },
+    "note": "编号一律两位补零。朝向按\"顺时针看角色\"：01 正面 → 08 前左斜。"
+  },
+  "palette": {
+    "cangzhua": {
+      "outline": "深青黑",
+      "fur": "深青蓝 #1B5F63±",
+      "belly": "米黄",
+      "armor": "青灰",
+      "claw": "象牙白",
+      "eye": "琥珀"
+    },
+    "geobear_strict_6": [
+      {
+        "name": "描边黑",
+        "rgb": [
+          6,
+          7,
+          11
+        ]
+      },
+      {
+        "name": "主体青蓝",
+        "rgb": [
+          25,
+          99,
+          101
+        ]
+      },
+      {
+        "name": "米白腹/口鼻",
+        "rgb": [
+          252,
+          236,
+          203
+        ]
+      },
+      {
+        "name": "灰甲片",
+        "rgb": [
+          92,
+          95,
+          102
+        ]
+      },
+      {
+        "name": "琥珀眼",
+        "rgb": [
+          240,
+          166,
+          40
+        ]
+      },
+      {
+        "name": "象牙爪/内耳",
+        "rgb": [
+          255,
+          249,
+          230
+        ]
+      }
+    ],
+    "ui_kit": {
+      "outline": "深炭近黑",
+      "panel": "米白",
+      "plate": "灰蓝",
+      "player_accent": "青绿",
+      "danger": "暗红",
+      "parry": "琥珀金",
+      "vulnerable": "橙红"
+    }
+  },
+  "groups": [
+    {
+      "id": "cangzhua_stand",
+      "title": "苍爪熊 · 站立八视图",
+      "count": 8,
+      "canvas": "1024×1536",
+      "alpha": true,
+      "status": "complete",
+      "items": [
+        {
+          "file": "cartoon/stand/cangzhua_stand_01_front.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            25,
+            141,
+            1005,
+            1326
+          ],
+          "content": [
+            980,
+            1185
+          ],
+          "has_alpha": true,
+          "kb": 2110,
+          "status": "final",
+          "role": "站立八视图 01 · 正面",
+          "notes": "主视图。也是攻击动画 F1/F8 待机帧的来源，两者像素完全一致。"
+        },
+        {
+          "file": "cartoon/stand/cangzhua_stand_02_front_right.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            105,
+            158,
+            936,
+            1389
+          ],
+          "content": [
+            831,
+            1231
+          ],
+          "has_alpha": true,
+          "kb": 1755,
+          "status": "final",
+          "role": "站立八视图 02 · 前右斜45°",
+          "notes": "生成图，未镜像。"
+        },
+        {
+          "file": "cartoon/stand/cangzhua_stand_03_right.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            205,
+            143,
+            784,
+            1392
+          ],
+          "content": [
+            579,
+            1249
+          ],
+          "has_alpha": true,
+          "kb": 1347,
+          "status": "final",
+          "role": "站立八视图 03 · 右侧面",
+          "notes": "纯侧面。身体宽 579px，是八视图中最窄的一张（正常，侧面本来就窄）。"
+        },
+        {
+          "file": "cartoon/stand/cangzhua_stand_04_back_right.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            136,
+            170,
+            920,
+            1398
+          ],
+          "content": [
+            784,
+            1228
+          ],
+          "has_alpha": true,
+          "kb": 1543,
+          "status": "final",
+          "role": "站立八视图 04 · 后右斜45°",
+          "notes": "生成图。06 由它水平镜像得到。"
+        },
+        {
+          "file": "cartoon/stand/cangzhua_stand_05_back.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            52,
+            168,
+            987,
+            1390
+          ],
+          "content": [
+            935,
+            1222
+          ],
+          "has_alpha": true,
+          "kb": 1602,
+          "status": "final",
+          "role": "站立八视图 05 · 正背面",
+          "notes": "正背面。"
+        },
+        {
+          "file": "cartoon/stand/cangzhua_stand_06_back_left.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            120,
+            159,
+            881,
+            1410
+          ],
+          "content": [
+            761,
+            1251
+          ],
+          "has_alpha": true,
+          "kb": 1420,
+          "status": "final",
+          "role": "站立八视图 06 · 后左斜45°",
+          "derived_from": "cartoon/stand/cangzhua_stand_04_back_right.png",
+          "notes": "= mirror(04)，像素级完全一致。"
+        },
+        {
+          "file": "cartoon/stand/cangzhua_stand_07_left.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            239,
+            145,
+            814,
+            1415
+          ],
+          "content": [
+            575,
+            1270
+          ],
+          "has_alpha": true,
+          "kb": 1424,
+          "status": "final",
+          "role": "站立八视图 07 · 左侧面",
+          "derived_from": "cartoon/stand/cangzhua_stand_03_right.png",
+          "notes": "= mirror(03)，像素级完全一致。"
+        },
+        {
+          "file": "cartoon/stand/cangzhua_stand_08_front_left.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            63,
+            161,
+            960,
+            1429
+          ],
+          "content": [
+            897,
+            1268
+          ],
+          "has_alpha": true,
+          "kb": 1776,
+          "status": "final",
+          "role": "站立八视图 08 · 前左斜45°",
+          "notes": "生成图，非镜像（内容宽 897，与 02 的 831 不同）。"
+        }
+      ]
+    },
+    {
+      "id": "cangzhua_quad",
+      "title": "苍爪熊 · 四足八视图",
+      "count": 8,
+      "canvas": "1024×1536",
+      "alpha": true,
+      "status": "complete-but-scale-drift",
+      "items": [
+        {
+          "file": "cartoon/quad/cangzhua_quad_01_front.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            42,
+            200,
+            997,
+            1349
+          ],
+          "content": [
+            955,
+            1149
+          ],
+          "has_alpha": true,
+          "kb": 1611,
+          "status": "final",
+          "role": "四足八视图 01 · 正面",
+          "notes": "正面四足姿态，是整套里最高的一张（content 1149px）。"
+        },
+        {
+          "file": "cartoon/quad/cangzhua_quad_02_front_right.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            91,
+            386,
+            936,
+            1252
+          ],
+          "content": [
+            845,
+            866
+          ],
+          "has_alpha": true,
+          "kb": 843,
+          "status": "final",
+          "role": "四足八视图 02 · 前右斜45°",
+          "notes": "content 仅 866px 高，比其他张矮约 25% —— 透视/姿态都更俯，跨方向混用会明显跳尺寸。"
+        },
+        {
+          "file": "cartoon/quad/cangzhua_quad_03_right.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            73,
+            389,
+            961,
+            1247
+          ],
+          "content": [
+            888,
+            858
+          ],
+          "has_alpha": true,
+          "kb": 786,
+          "status": "final",
+          "role": "四足八视图 03 · 右侧面",
+          "notes": "纯侧面，content 858px，同 02 一样偏矮。07 由它镜像得到。"
+        },
+        {
+          "file": "cartoon/quad/cangzhua_quad_04_back_right.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            87,
+            267,
+            960,
+            1291
+          ],
+          "content": [
+            873,
+            1024
+          ],
+          "has_alpha": true,
+          "kb": 585,
+          "status": "final",
+          "role": "四足八视图 04 · 后右斜45°",
+          "notes": "后背斜。06 由它镜像得到。"
+        },
+        {
+          "file": "cartoon/quad/cangzhua_quad_05_back.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            73,
+            241,
+            961,
+            1299
+          ],
+          "content": [
+            888,
+            1058
+          ],
+          "has_alpha": true,
+          "kb": 750,
+          "status": "final",
+          "role": "四足八视图 05 · 正背面",
+          "notes": "正背面。"
+        },
+        {
+          "file": "cartoon/quad/cangzhua_quad_06_back_left.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            64,
+            267,
+            937,
+            1291
+          ],
+          "content": [
+            873,
+            1024
+          ],
+          "has_alpha": true,
+          "kb": 584,
+          "status": "final",
+          "role": "四足八视图 06 · 后左斜45°",
+          "derived_from": "cartoon/quad/cangzhua_quad_04_back_right.png",
+          "notes": "= mirror(04)，像素级一致。"
+        },
+        {
+          "file": "cartoon/quad/cangzhua_quad_07_left.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            63,
+            389,
+            951,
+            1247
+          ],
+          "content": [
+            888,
+            858
+          ],
+          "has_alpha": true,
+          "kb": 785,
+          "status": "final",
+          "role": "四足八视图 07 · 左侧面",
+          "derived_from": "cartoon/quad/cangzhua_quad_03_right.png",
+          "notes": "= mirror(03)，像素级一致。"
+        },
+        {
+          "file": "cartoon/quad/cangzhua_quad_08_front_left.png",
+          "canvas": [
+            1024,
+            1536
+          ],
+          "bbox": [
+            44,
+            284,
+            994,
+            1346
+          ],
+          "content": [
+            950,
+            1062
+          ],
+          "has_alpha": true,
+          "kb": 1069,
+          "status": "final",
+          "role": "四足八视图 08 · 前左斜45°",
+          "notes": "生成图，非镜像。content 1062px，介于 01 与 04 之间。"
+        }
+      ]
+    },
+    {
+      "id": "cangzhua_attack",
+      "title": "苍爪熊 · 右臂横扫攻击",
+      "count": 9,
+      "canvas": "单帧各异 / 拼版 3072×2048",
+      "alpha": "单帧透明，拼版不透明",
+      "status": "complete",
+      "items": [
+        {
+          "file": "cartoon/attack/cangzhua_attack_sweep_f01.png",
+          "canvas": [
+            980,
+            1185
+          ],
+          "bbox": [
+            0,
+            0,
+            980,
+            1185
+          ],
+          "content": [
+            980,
+            1185
+          ],
+          "has_alpha": true,
+          "kb": 1689,
+          "status": "final",
+          "role": "横扫攻击 第 01 帧 · 待机帧，直接复用 cangzhua_stand_01_front.png 裁边结果。",
+          "notes": "紧裁切（bbox 即画布），未缩放；画布尺寸各帧不同（847~980 宽），直接播放会抖动，需先统一画布+对齐脚底。"
+        },
+        {
+          "file": "cartoon/attack/cangzhua_attack_sweep_f02.png",
+          "canvas": [
+            958,
+            1163
+          ],
+          "bbox": [
+            0,
+            0,
+            958,
+            1163
+          ],
+          "content": [
+            958,
+            1163
+          ],
+          "has_alpha": true,
+          "kb": 1229,
+          "status": "final",
+          "role": "横扫攻击 第 02 帧 · 起手：右臂（画面左侧）高举，爪尖朝上。",
+          "notes": "紧裁切（bbox 即画布），未缩放；画布尺寸各帧不同（847~980 宽），直接播放会抖动，需先统一画布+对齐脚底。"
+        },
+        {
+          "file": "cartoon/attack/cangzhua_attack_sweep_f03.png",
+          "canvas": [
+            921,
+            1075
+          ],
+          "bbox": [
+            0,
+            0,
+            921,
+            1075
+          ],
+          "content": [
+            921,
+            1075
+          ],
+          "has_alpha": true,
+          "kb": 987,
+          "status": "final",
+          "role": "横扫攻击 第 03 帧 · 挥出：手臂扫到头部高度，爪尖向左带出。",
+          "notes": "紧裁切（bbox 即画布），未缩放；画布尺寸各帧不同（847~980 宽），直接播放会抖动，需先统一画布+对齐脚底。"
+        },
+        {
+          "file": "cartoon/attack/cangzhua_attack_sweep_f04.png",
+          "canvas": [
+            847,
+            1037
+          ],
+          "bbox": [
+            0,
+            0,
+            847,
+            1037
+          ],
+          "content": [
+            847,
+            1037
+          ],
+          "has_alpha": true,
+          "kb": 912,
+          "status": "final",
+          "role": "横扫攻击 第 04 帧 · 横扫中段：手臂横过胸前。",
+          "notes": "紧裁切（bbox 即画布），未缩放；画布尺寸各帧不同（847~980 宽），直接播放会抖动，需先统一画布+对齐脚底。"
+        },
+        {
+          "file": "cartoon/attack/cangzhua_attack_sweep_f05.png",
+          "canvas": [
+            847,
+            1035
+          ],
+          "bbox": [
+            0,
+            0,
+            847,
+            1035
+          ],
+          "content": [
+            847,
+            1035
+          ],
+          "has_alpha": true,
+          "kb": 871,
+          "status": "final",
+          "role": "横扫攻击 第 05 帧 · 横扫后段：与 04 姿态相近，仅手臂角度小幅变化（这两帧最容易看成本帧重复）。",
+          "notes": "紧裁切（bbox 即画布），未缩放；画布尺寸各帧不同（847~980 宽），直接播放会抖动，需先统一画布+对齐脚底。"
+        },
+        {
+          "file": "cartoon/attack/cangzhua_attack_sweep_f06.png",
+          "canvas": [
+            847,
+            1034
+          ],
+          "bbox": [
+            0,
+            0,
+            847,
+            1034
+          ],
+          "content": [
+            847,
+            1034
+          ],
+          "has_alpha": true,
+          "kb": 916,
+          "status": "final",
+          "role": "横扫攻击 第 06 帧 · 收势：手臂下沉到腰线，爪尖朝右下。曾重抽 2 次（前两次左臂没收）才定稿。",
+          "notes": "紧裁切（bbox 即画布），未缩放；画布尺寸各帧不同（847~980 宽），直接播放会抖动，需先统一画布+对齐脚底。"
+        },
+        {
+          "file": "cartoon/attack/cangzhua_attack_sweep_f07.png",
+          "canvas": [
+            955,
+            1109
+          ],
+          "bbox": [
+            0,
+            0,
+            955,
+            1109
+          ],
+          "content": [
+            955,
+            1109
+          ],
+          "has_alpha": true,
+          "kb": 1010,
+          "status": "final",
+          "role": "横扫攻击 第 07 帧 · 回位：双臂基本放下，身体略转。",
+          "notes": "紧裁切（bbox 即画布），未缩放；画布尺寸各帧不同（847~980 宽），直接播放会抖动，需先统一画布+对齐脚底。"
+        },
+        {
+          "file": "cartoon/attack/cangzhua_attack_sweep_f08.png",
+          "canvas": [
+            980,
+            1185
+          ],
+          "bbox": [
+            0,
+            0,
+            980,
+            1185
+          ],
+          "content": [
+            980,
+            1185
+          ],
+          "has_alpha": true,
+          "kb": 1689,
+          "status": "final",
+          "role": "横扫攻击 第 08 帧 · = 完全等于 f01（同一待机帧），作为循环收尾。",
+          "derived_from": "cartoon/attack/cangzhua_attack_sweep_f01.png",
+          "notes": "紧裁切（bbox 即画布），未缩放；画布尺寸各帧不同（847~980 宽），直接播放会抖动，需先统一画布+对齐脚底。"
+        },
+        {
+          "file": "cartoon/attack/cangzhua_attack_sweep_sheet.png",
+          "canvas": [
+            3072,
+            2048
+          ],
+          "bbox": [
+            0,
+            0,
+            3072,
+            2048
+          ],
+          "content": [
+            3072,
+            2048
+          ],
+          "has_alpha": false,
+          "kb": 4345,
+          "status": "final",
+          "role": "横扫攻击 4×2 拼版（768×1024 单格，共 3072×2048）",
+          "notes": "浅灰底 RGB、非透明。已做统一缩放 0.7347 + 脚底基线对齐，可直接当预览/参考板；切回单帧需再对齐。"
+        }
+      ]
+    },
+    {
+      "id": "geobear_stand",
+      "title": "几何熊 · 站立八视图",
+      "count": 8,
+      "canvas": "1024×1024（01 为 1254×1254）",
+      "alpha": true,
+      "status": "complete",
+      "items": [
+        {
+          "file": "geometric/geobear/geobear_stand_01_front.png",
+          "canvas": [
+            1254,
+            1254
+          ],
+          "bbox": [
+            52,
+            41,
+            1201,
+            1182
+          ],
+          "content": [
+            1149,
+            1141
+          ],
+          "has_alpha": true,
+          "kb": 47,
+          "status": "final",
+          "role": "几何熊站立八视图 01 · 正面",
+          "notes": "母本（用户确认的调色稿），尺寸 1254×1254 与其他七张不同。"
+        },
+        {
+          "file": "geometric/geobear/geobear_stand_02_front_right.png",
+          "canvas": [
+            1024,
+            1024
+          ],
+          "bbox": [
+            296,
+            55,
+            728,
+            970
+          ],
+          "content": [
+            432,
+            915
+          ],
+          "has_alpha": true,
+          "kb": 24,
+          "status": "final",
+          "role": "几何熊站立八视图 02 · 前右斜45°",
+          "notes": "09 由它镜像得到。生成的视角实际比\"前右斜 45°\"更偏侧面（约 60~70°）。"
+        },
+        {
+          "file": "geometric/geobear/geobear_stand_03_right.png",
+          "canvas": [
+            1024,
+            1024
+          ],
+          "bbox": [
+            287,
+            52,
+            738,
+            971
+          ],
+          "content": [
+            451,
+            919
+          ],
+          "has_alpha": true,
+          "kb": 22,
+          "status": "final",
+          "role": "几何熊站立八视图 03 · 右侧面",
+          "notes": "纯侧面。07 由它镜像得到。"
+        },
+        {
+          "file": "geometric/geobear/geobear_stand_04_back_right.png",
+          "canvas": [
+            1024,
+            1024
+          ],
+          "bbox": [
+            192,
+            67,
+            841,
+            975
+          ],
+          "content": [
+            649,
+            908
+          ],
+          "has_alpha": true,
+          "kb": 23,
+          "status": "final",
+          "role": "几何熊站立八视图 04 · 后右斜45°",
+          "notes": "后背斜。06 由它镜像得到。"
+        },
+        {
+          "file": "geometric/geobear/geobear_stand_05_back.png",
+          "canvas": [
+            1024,
+            1024
+          ],
+          "bbox": [
+            52,
+            53,
+            973,
+            965
+          ],
+          "content": [
+            921,
+            912
+          ],
+          "has_alpha": true,
+          "kb": 30,
+          "status": "final",
+          "role": "几何熊站立八视图 05 · 正背面",
+          "notes": "正背面。"
+        },
+        {
+          "file": "geometric/geobear/geobear_stand_06_back_left.png",
+          "canvas": [
+            1024,
+            1024
+          ],
+          "bbox": [
+            183,
+            67,
+            832,
+            975
+          ],
+          "content": [
+            649,
+            908
+          ],
+          "has_alpha": true,
+          "kb": 23,
+          "status": "final",
+          "role": "几何熊站立八视图 06 · 后左斜45°",
+          "derived_from": "geometric/geobear/geobear_stand_04_back_right.png",
+          "notes": "= mirror(04)，像素级一致。"
+        },
+        {
+          "file": "geometric/geobear/geobear_stand_07_left.png",
+          "canvas": [
+            1024,
+            1024
+          ],
+          "bbox": [
+            286,
+            52,
+            737,
+            971
+          ],
+          "content": [
+            451,
+            919
+          ],
+          "has_alpha": true,
+          "kb": 22,
+          "status": "final",
+          "role": "几何熊站立八视图 07 · 左侧面",
+          "derived_from": "geometric/geobear/geobear_stand_03_right.png",
+          "notes": "= mirror(03)，像素级一致。"
+        },
+        {
+          "file": "geometric/geobear/geobear_stand_08_front_left.png",
+          "canvas": [
+            1024,
+            1024
+          ],
+          "bbox": [
+            296,
+            55,
+            728,
+            970
+          ],
+          "content": [
+            432,
+            915
+          ],
+          "has_alpha": true,
+          "kb": 24,
+          "status": "final",
+          "role": "几何熊站立八视图 08 · 前左斜45°",
+          "derived_from": "geometric/geobear/geobear_stand_02_front_right.png",
+          "notes": "= mirror(02)，像素级一致。"
+        }
+      ]
+    },
+    {
+      "id": "geobear_master",
+      "title": "几何熊 · 生成母图",
+      "count": 1,
+      "canvas": "1254×1254",
+      "alpha": true,
+      "status": "reference",
+      "items": [
+        {
+          "file": "geometric/geobear/geometric_bear_front_transparent.png",
+          "canvas": [
+            1254,
+            1254
+          ],
+          "bbox": [
+            0,
+            21,
+            1205,
+            1254
+          ],
+          "content": [
+            1205,
+            1233
+          ],
+          "has_alpha": true,
+          "kb": 941,
+          "status": "reference",
+          "role": "几何熊正面生成原图（未过色板清洗）",
+          "notes": "19140 种颜色，是生成原稿；geobear_stand_01 是它经 6 色标准色板重映射后的成品。内容贴到画布底边（bbox 到 y=1254），不要直接用于游戏。"
+        }
+      ]
+    },
+    {
+      "id": "ui_board",
+      "title": "UI Kit · 展示板（定稿 + 历史稿）",
+      "count": 8,
+      "canvas": "1536×1024",
+      "alpha": false,
+      "status": "final+archive",
+      "items": [
+        {
+          "file": "geometric/ui_kit/boards/geometric_ui_concept_v1.png",
+          "canvas": [
+            1536,
+            1024
+          ],
+          "bbox": [
+            0,
+            0,
+            1536,
+            1024
+          ],
+          "content": [
+            1536,
+            1024
+          ],
+          "has_alpha": false,
+          "kb": 1376,
+          "status": "final",
+          "role": "UI Kit 定稿母板（42 个拆件的唯一来源）",
+          "notes": "1536×1024，六分区：HEALTH/POSTURE、COMBAT、DIRECTIONS、BUTTON STATES、PANELS、SETTINGS。无右下角水印，是干净的母本。",
+          "compare_with": "geometric/ui_kit/boards/archive/Redraw_this_UI_kit_showcase_bo_2026-10-22T09-14-36.png"
+        },
+        {
+          "file": "geometric/ui_kit/boards/archive/Redraw_this_UI_kit_showcase_bo_2026-10-22T09-14-36.png",
+          "canvas": [
+            1536,
+            1024
+          ],
+          "bbox": [
+            0,
+            0,
+            1536,
+            1024
+          ],
+          "content": [
+            1536,
+            1024
+          ],
+          "has_alpha": false,
+          "kb": 1177,
+          "status": "final-alt",
+          "role": "同一套设计的另一版渲染（未拆件）",
+          "notes": "与母板布局一致但像素不同（全图级微位移），右下角带\"AI生成\"水印。仅作对照，拆件请用 geometric_ui_concept_v1.png。"
+        },
+        {
+          "file": "geometric/ui_kit/boards/archive/Redraw_this_UI_kit_showcase_bo_2026-10-22T08-09-23.png",
+          "canvas": [
+            1536,
+            1024
+          ],
+          "bbox": [
+            0,
+            0,
+            1536,
+            1024
+          ],
+          "content": [
+            1536,
+            1024
+          ],
+          "has_alpha": false,
+          "kb": 1123,
+          "status": "superseded",
+          "role": "六分区定稿第一版（已被取代）",
+          "notes": "第一次达到\"粗线/锐角/大间距\"要求，右下有 AI 水印。组件位置与定稿不同，不可用于拆件。"
+        },
+        {
+          "file": "geometric/ui_kit/boards/archive/Use_the_reference_image_ONLY_f_2026-10-22T08-03-53.png",
+          "canvas": [
+            1536,
+            1024
+          ],
+          "bbox": [
+            0,
+            0,
+            1536,
+            1024
+          ],
+          "content": [
+            1536,
+            1024
+          ],
+          "has_alpha": false,
+          "kb": 1022,
+          "status": "superseded",
+          "role": "几何熊风 UI 板（废案）",
+          "notes": "风格贴合几何熊，但圆形图标只出 3/6、缺教学对话框，页签/滑块残留 MODE、CLOSE 文字，鼠标画成手型光标。"
+        },
+        {
+          "file": "geometric/ui_kit/boards/archive/A_single_high_resolution_game__2026-10-22T07-35-09.png",
+          "canvas": [
+            1536,
+            1024
+          ],
+          "bbox": [
+            0,
+            0,
+            1536,
+            1024
+          ],
+          "content": [
+            1536,
+            1024
+          ],
+          "has_alpha": false,
+          "kb": 1988,
+          "status": "superseded",
+          "role": "粗线方块风（风格定稿、后被整体换风格）",
+          "notes": "粗描边+无像素感，三态血条/方格架势条/橙框裂纹易伤框/四向粗箭头/按钮五态齐全，但有可读英文标签与伤害数字。"
+        },
+        {
+          "file": "geometric/ui_kit/boards/archive/A_single_high_resolution_game__2026-10-22T07-34-19.png",
+          "canvas": [
+            1536,
+            1024
+          ],
+          "bbox": [
+            0,
+            0,
+            1536,
+            1024
+          ],
+          "content": [
+            1536,
+            1024
+          ],
+          "has_alpha": false,
+          "kb": 2167,
+          "status": "rejected",
+          "role": "粗线方块风 失败版",
+          "notes": "描边达标但组件大面积缺失、分区混乱。保留仅为记录\"风格词加强会牺牲组件完整性\"这个坑。"
+        },
+        {
+          "file": "geometric/ui_kit/boards/archive/A_single_high_resolution_game__2026-10-22T07-20-07.png",
+          "canvas": [
+            1536,
+            1024
+          ],
+          "bbox": [
+            0,
+            0,
+            1536,
+            1024
+          ],
+          "content": [
+            1536,
+            1024
+          ],
+          "has_alpha": false,
+          "kb": 1915,
+          "status": "rejected",
+          "role": "Minecraft 极简方块风 展示板",
+          "notes": "三分区，深炭灰边框+阶梯切角+三明度。含英文标签与伤害数字，与最终风格不符。"
+        },
+        {
+          "file": "geometric/ui_kit/boards/archive/A_single_high_resolution_UI_ki_2026-10-22T06-36-59.png",
+          "canvas": [
+            1536,
+            1024
+          ],
+          "bbox": [
+            0,
+            0,
+            1536,
+            1024
+          ],
+          "content": [
+            1536,
+            1024
+          ],
+          "has_alpha": false,
+          "kb": 2487,
+          "status": "reference",
+          "role": "首版四分區完整 UI 板",
+          "notes": "最早一版：四分区（战斗 HUD / 划线与弹反提示 / 基础交互 / 扩展组件），组件覆盖最全，含大量扩展件（物品格、技能树、奖励卡、任务条、胜负横幅）。作为\"组件需求清单\"参考很有价值。"
+        }
+      ],
+      "note": "boards/ 只放定稿母板；boards/archive/ 放 7 张历史稿（含另一版渲染与全部废案）。"
+    },
+    {
+      "id": "ui_component",
+      "title": "UI Kit · 42 个透明拆件",
+      "count": 42,
+      "canvas": "各组件原尺寸",
+      "alpha": true,
+      "status": "final",
+      "items": [
+        {
+          "file": "geometric/ui_kit/components/arrow_cyan_left.png",
+          "canvas": [
+            134,
+            125
+          ],
+          "bbox": [
+            1,
+            4,
+            132,
+            123
+          ],
+          "content": [
+            131,
+            119
+          ],
+          "has_alpha": true,
+          "kb": 21,
+          "status": "final",
+          "role": "青色方向箭头·左",
+          "notes": "134×125"
+        },
+        {
+          "file": "geometric/ui_kit/components/arrow_cyan_right.png",
+          "canvas": [
+            133,
+            127
+          ],
+          "bbox": [
+            0,
+            4,
+            130,
+            126
+          ],
+          "content": [
+            130,
+            122
+          ],
+          "has_alpha": true,
+          "kb": 21,
+          "status": "final",
+          "role": "青色方向箭头·右",
+          "notes": "133×127"
+        },
+        {
+          "file": "geometric/ui_kit/components/arrow_cyan_up.png",
+          "canvas": [
+            131,
+            128
+          ],
+          "bbox": [
+            0,
+            4,
+            127,
+            126
+          ],
+          "content": [
+            127,
+            122
+          ],
+          "has_alpha": true,
+          "kb": 20,
+          "status": "final",
+          "role": "青色方向箭头·上",
+          "notes": "131×128"
+        },
+        {
+          "file": "geometric/ui_kit/components/arrow_red_down.png",
+          "canvas": [
+            132,
+            125
+          ],
+          "bbox": [
+            4,
+            3,
+            131,
+            123
+          ],
+          "content": [
+            127,
+            120
+          ],
+          "has_alpha": true,
+          "kb": 21,
+          "status": "final",
+          "role": "红色方向箭头·下",
+          "notes": "132×125"
+        },
+        {
+          "file": "geometric/ui_kit/components/arrow_red_left.png",
+          "canvas": [
+            134,
+            128
+          ],
+          "bbox": [
+            1,
+            0,
+            134,
+            127
+          ],
+          "content": [
+            133,
+            127
+          ],
+          "has_alpha": true,
+          "kb": 21,
+          "status": "final",
+          "role": "红色方向箭头·左",
+          "notes": "134×128"
+        },
+        {
+          "file": "geometric/ui_kit/components/arrow_red_right.png",
+          "canvas": [
+            128,
+            128
+          ],
+          "bbox": [
+            1,
+            0,
+            128,
+            127
+          ],
+          "content": [
+            127,
+            127
+          ],
+          "has_alpha": true,
+          "kb": 22,
+          "status": "final",
+          "role": "红色方向箭头·右",
+          "notes": "128×128，方块底"
+        },
+        {
+          "file": "geometric/ui_kit/components/bar_countdown.png",
+          "canvas": [
+            215,
+            37
+          ],
+          "bbox": [
+            4,
+            0,
+            214,
+            37
+          ],
+          "content": [
+            210,
+            37
+          ],
+          "has_alpha": true,
+          "kb": 8,
+          "status": "final",
+          "role": "易伤倒计时条",
+          "notes": "215×37，紫粉填充"
+        },
+        {
+          "file": "geometric/ui_kit/components/bar_health_boss.png",
+          "canvas": [
+            879,
+            66
+          ],
+          "bbox": [
+            0,
+            0,
+            879,
+            66
+          ],
+          "content": [
+            879,
+            66
+          ],
+          "has_alpha": true,
+          "kb": 25,
+          "status": "final",
+          "role": "Boss 血条",
+          "notes": "879×66，全素材最长的条，同三段明度"
+        },
+        {
+          "file": "geometric/ui_kit/components/bar_health_player.png",
+          "canvas": [
+            341,
+            55
+          ],
+          "bbox": [
+            0,
+            0,
+            341,
+            53
+          ],
+          "content": [
+            341,
+            53
+          ],
+          "has_alpha": true,
+          "kb": 14,
+          "status": "final",
+          "role": "玩家血条",
+          "notes": "341×55，三段明度（深红/亮红/浅粉）表示扣血过程，可九宫格横向拉伸"
+        },
+        {
+          "file": "geometric/ui_kit/components/bar_stance.png",
+          "canvas": [
+            1120,
+            54
+          ],
+          "bbox": [
+            3,
+            2,
+            1120,
+            54
+          ],
+          "content": [
+            1117,
+            52
+          ],
+          "has_alpha": true,
+          "kb": 25,
+          "status": "final",
+          "role": "架势条",
+          "notes": "1120×54，金色填充+深色底"
+        },
+        {
+          "file": "geometric/ui_kit/components/btn_back.png",
+          "canvas": [
+            95,
+            95
+          ],
+          "bbox": [
+            4,
+            0,
+            95,
+            91
+          ],
+          "content": [
+            91,
+            91
+          ],
+          "has_alpha": true,
+          "kb": 17,
+          "status": "final",
+          "role": "圆形按钮·返回",
+          "notes": "95×95"
+        },
+        {
+          "file": "geometric/ui_kit/components/btn_close.png",
+          "canvas": [
+            94,
+            95
+          ],
+          "bbox": [
+            3,
+            0,
+            94,
+            91
+          ],
+          "content": [
+            91,
+            91
+          ],
+          "has_alpha": true,
+          "kb": 19,
+          "status": "final",
+          "role": "圆形按钮·关闭",
+          "notes": "94×95"
+        },
+        {
+          "file": "geometric/ui_kit/components/btn_pause.png",
+          "canvas": [
+            97,
+            95
+          ],
+          "bbox": [
+            2,
+            0,
+            93,
+            91
+          ],
+          "content": [
+            91,
+            91
+          ],
+          "has_alpha": true,
+          "kb": 17,
+          "status": "final",
+          "role": "圆形按钮·暂停",
+          "notes": "97×95"
+        },
+        {
+          "file": "geometric/ui_kit/components/btn_play.png",
+          "canvas": [
+            97,
+            95
+          ],
+          "bbox": [
+            2,
+            0,
+            95,
+            91
+          ],
+          "content": [
+            93,
+            91
+          ],
+          "has_alpha": true,
+          "kb": 17,
+          "status": "final",
+          "role": "圆形按钮·开始",
+          "notes": "97×95"
+        },
+        {
+          "file": "geometric/ui_kit/components/btn_retry.png",
+          "canvas": [
+            96,
+            95
+          ],
+          "bbox": [
+            2,
+            0,
+            95,
+            91
+          ],
+          "content": [
+            93,
+            91
+          ],
+          "has_alpha": true,
+          "kb": 19,
+          "status": "final",
+          "role": "圆形按钮·重试",
+          "notes": "96×95"
+        },
+        {
+          "file": "geometric/ui_kit/components/btn_settings.png",
+          "canvas": [
+            96,
+            95
+          ],
+          "bbox": [
+            3,
+            0,
+            96,
+            91
+          ],
+          "content": [
+            93,
+            91
+          ],
+          "has_alpha": true,
+          "kb": 20,
+          "status": "final",
+          "role": "圆形按钮·设置",
+          "notes": "96×95"
+        },
+        {
+          "file": "geometric/ui_kit/components/btn_wide_disabled.png",
+          "canvas": [
+            188,
+            92
+          ],
+          "bbox": [
+            0,
+            4,
+            184,
+            88
+          ],
+          "content": [
+            184,
+            84
+          ],
+          "has_alpha": true,
+          "kb": 9,
+          "status": "final",
+          "role": "主按钮·禁用",
+          "notes": "188×92，灰化+变窄"
+        },
+        {
+          "file": "geometric/ui_kit/components/btn_wide_hover.png",
+          "canvas": [
+            210,
+            92
+          ],
+          "bbox": [
+            0,
+            4,
+            210,
+            88
+          ],
+          "content": [
+            210,
+            84
+          ],
+          "has_alpha": true,
+          "kb": 17,
+          "status": "final",
+          "role": "主按钮·悬停",
+          "notes": "210×92，带外发光描边"
+        },
+        {
+          "file": "geometric/ui_kit/components/btn_wide_normal.png",
+          "canvas": [
+            207,
+            92
+          ],
+          "bbox": [
+            0,
+            4,
+            207,
+            88
+          ],
+          "content": [
+            207,
+            84
+          ],
+          "has_alpha": true,
+          "kb": 14,
+          "status": "final",
+          "role": "主按钮·常态",
+          "notes": "207×92"
+        },
+        {
+          "file": "geometric/ui_kit/components/btn_wide_pressed.png",
+          "canvas": [
+            207,
+            92
+          ],
+          "bbox": [
+            0,
+            4,
+            207,
+            88
+          ],
+          "content": [
+            207,
+            84
+          ],
+          "has_alpha": true,
+          "kb": 14,
+          "status": "final",
+          "role": "主按钮·按下",
+          "notes": "207×92"
+        },
+        {
+          "file": "geometric/ui_kit/components/checkbox_off.png",
+          "canvas": [
+            69,
+            70
+          ],
+          "bbox": [
+            4,
+            4,
+            68,
+            69
+          ],
+          "content": [
+            64,
+            65
+          ],
+          "has_alpha": true,
+          "kb": 6,
+          "status": "final",
+          "role": "复选框·未选",
+          "notes": "69×70"
+        },
+        {
+          "file": "geometric/ui_kit/components/checkbox_on.png",
+          "canvas": [
+            72,
+            70
+          ],
+          "bbox": [
+            4,
+            4,
+            68,
+            69
+          ],
+          "content": [
+            64,
+            65
+          ],
+          "has_alpha": true,
+          "kb": 9,
+          "status": "final",
+          "role": "复选框·已选",
+          "notes": "72×70"
+        },
+        {
+          "file": "geometric/ui_kit/components/curve_swipe.png",
+          "canvas": [
+            340,
+            85
+          ],
+          "bbox": [
+            4,
+            4,
+            336,
+            81
+          ],
+          "content": [
+            332,
+            77
+          ],
+          "has_alpha": true,
+          "kb": 38,
+          "status": "final",
+          "role": "划线轨迹曲线",
+          "notes": "340×85，起点圆点+曲线+箭头三段，可拆可整用"
+        },
+        {
+          "file": "geometric/ui_kit/components/fx_hit_burst.png",
+          "canvas": [
+            150,
+            142
+          ],
+          "bbox": [
+            0,
+            0,
+            150,
+            142
+          ],
+          "content": [
+            150,
+            142
+          ],
+          "has_alpha": true,
+          "kb": 37,
+          "status": "final",
+          "role": "受击爆点",
+          "notes": "红色尖刺星，150×142"
+        },
+        {
+          "file": "geometric/ui_kit/components/fx_parry_spark.png",
+          "canvas": [
+            131,
+            150
+          ],
+          "bbox": [
+            0,
+            4,
+            130,
+            150
+          ],
+          "content": [
+            130,
+            146
+          ],
+          "has_alpha": true,
+          "kb": 28,
+          "status": "final",
+          "role": "弹反成功火花",
+          "notes": "青绿星芒，131×150，中心可做缩放/闪光动画"
+        },
+        {
+          "file": "geometric/ui_kit/components/icon_guard_break.png",
+          "canvas": [
+            135,
+            156
+          ],
+          "bbox": [
+            4,
+            2,
+            135,
+            156
+          ],
+          "content": [
+            131,
+            154
+          ],
+          "has_alpha": true,
+          "kb": 38,
+          "status": "final",
+          "role": "破防图标",
+          "notes": "金色碎裂爪痕状碎片，135×156，多块散片已完整切出"
+        },
+        {
+          "file": "geometric/ui_kit/components/icon_heart.png",
+          "canvas": [
+            82,
+            74
+          ],
+          "bbox": [
+            0,
+            0,
+            82,
+            74
+          ],
+          "content": [
+            82,
+            74
+          ],
+          "has_alpha": true,
+          "kb": 13,
+          "status": "final",
+          "role": "玩家血量图标",
+          "notes": "红心，小尺寸 82×74"
+        },
+        {
+          "file": "geometric/ui_kit/components/icon_mouse.png",
+          "canvas": [
+            104,
+            139
+          ],
+          "bbox": [
+            4,
+            4,
+            102,
+            135
+          ],
+          "content": [
+            98,
+            131
+          ],
+          "has_alpha": true,
+          "kb": 17,
+          "status": "final",
+          "role": "鼠标左键图标",
+          "notes": "104×139，左键高亮"
+        },
+        {
+          "file": "geometric/ui_kit/components/icon_shield.png",
+          "canvas": [
+            71,
+            85
+          ],
+          "bbox": [
+            0,
+            0,
+            71,
+            85
+          ],
+          "content": [
+            71,
+            85
+          ],
+          "has_alpha": true,
+          "kb": 11,
+          "status": "final",
+          "role": "架势/护盾图标",
+          "notes": "金色盾，71×85"
+        },
+        {
+          "file": "geometric/ui_kit/components/icon_shield_cracked.png",
+          "canvas": [
+            85,
+            94
+          ],
+          "bbox": [
+            0,
+            0,
+            83,
+            94
+          ],
+          "content": [
+            83,
+            94
+          ],
+          "has_alpha": true,
+          "kb": 14,
+          "status": "final",
+          "role": "架势破裂图标",
+          "notes": "灰盾带裂纹，85×94"
+        },
+        {
+          "file": "geometric/ui_kit/components/icon_skull.png",
+          "canvas": [
+            99,
+            92
+          ],
+          "bbox": [
+            0,
+            0,
+            99,
+            92
+          ],
+          "content": [
+            99,
+            92
+          ],
+          "has_alpha": true,
+          "kb": 18,
+          "status": "final",
+          "role": "Boss 骷髅图标",
+          "notes": "99×92"
+        },
+        {
+          "file": "geometric/ui_kit/components/icon_speaker.png",
+          "canvas": [
+            59,
+            68
+          ],
+          "bbox": [
+            0,
+            0,
+            59,
+            68
+          ],
+          "content": [
+            59,
+            68
+          ],
+          "has_alpha": true,
+          "kb": 7,
+          "status": "final",
+          "role": "喇叭/音量图标",
+          "notes": "59×68"
+        },
+        {
+          "file": "geometric/ui_kit/components/icon_vulnerable.png",
+          "canvas": [
+            103,
+            108
+          ],
+          "bbox": [
+            0,
+            3,
+            103,
+            108
+          ],
+          "content": [
+            103,
+            105
+          ],
+          "has_alpha": true,
+          "kb": 21,
+          "status": "final",
+          "role": "易伤图标",
+          "notes": "紫裂盾，103×108"
+        },
+        {
+          "file": "geometric/ui_kit/components/panel_dialog.png",
+          "canvas": [
+            263,
+            151
+          ],
+          "bbox": [
+            1,
+            4,
+            260,
+            150
+          ],
+          "content": [
+            259,
+            146
+          ],
+          "has_alpha": true,
+          "kb": 28,
+          "status": "final",
+          "role": "对话面板",
+          "notes": "263×151，带下指三角 切图时把上方分区标题的横线/文字带进来了一点（见 issues[3]）。"
+        },
+        {
+          "file": "geometric/ui_kit/components/panel_menu.png",
+          "canvas": [
+            442,
+            145
+          ],
+          "bbox": [
+            0,
+            0,
+            440,
+            145
+          ],
+          "content": [
+            440,
+            145
+          ],
+          "has_alpha": true,
+          "kb": 44,
+          "status": "final",
+          "role": "菜单面板",
+          "notes": "442×145，含页签与关闭按钮；注意顶部残留 \"ANELS\" 字样 切图时把上方分区标题的横线/文字带进来了一点（见 issues[3]）。"
+        },
+        {
+          "file": "geometric/ui_kit/components/panel_results.png",
+          "canvas": [
+            702,
+            145
+          ],
+          "bbox": [
+            4,
+            0,
+            698,
+            145
+          ],
+          "content": [
+            694,
+            145
+          ],
+          "has_alpha": true,
+          "kb": 53,
+          "status": "final",
+          "role": "结算面板",
+          "notes": "702×145，含标题条 切图时把上方分区标题的横线/文字带进来了一点（见 issues[3]）。"
+        },
+        {
+          "file": "geometric/ui_kit/components/plate_hint_large.png",
+          "canvas": [
+            404,
+            97
+          ],
+          "bbox": [
+            0,
+            3,
+            404,
+            95
+          ],
+          "content": [
+            404,
+            92
+          ],
+          "has_alpha": true,
+          "kb": 23,
+          "status": "final",
+          "role": "大号提示底板",
+          "notes": "404×97，切角；用于 Boss 预警条 切图时把上方分区标题的横线/文字带进来了一点（见 issues[3]）。"
+        },
+        {
+          "file": "geometric/ui_kit/components/plate_hint_small.png",
+          "canvas": [
+            253,
+            89
+          ],
+          "bbox": [
+            0,
+            3,
+            253,
+            89
+          ],
+          "content": [
+            253,
+            86
+          ],
+          "has_alpha": true,
+          "kb": 19,
+          "status": "final",
+          "role": "小号提示底板",
+          "notes": "253×89，圆角；用于玩家侧提示 切图时把上方分区标题的横线/文字带进来了一点（见 issues[3]）。"
+        },
+        {
+          "file": "geometric/ui_kit/components/slider_volume.png",
+          "canvas": [
+            364,
+            71
+          ],
+          "bbox": [
+            0,
+            0,
+            360,
+            71
+          ],
+          "content": [
+            360,
+            71
+          ],
+          "has_alpha": true,
+          "kb": 23,
+          "status": "final",
+          "role": "音量滑条",
+          "notes": "364×71，含滑钮"
+        },
+        {
+          "file": "geometric/ui_kit/components/tabs_mode.png",
+          "canvas": [
+            384,
+            80
+          ],
+          "bbox": [
+            4,
+            4,
+            383,
+            76
+          ],
+          "content": [
+            379,
+            72
+          ],
+          "has_alpha": true,
+          "kb": 20,
+          "status": "final",
+          "role": "模式页签（三段）",
+          "notes": "384×80，首段选中态"
+        },
+        {
+          "file": "geometric/ui_kit/components/toggle_off.png",
+          "canvas": [
+            125,
+            71
+          ],
+          "bbox": [
+            1,
+            0,
+            123,
+            69
+          ],
+          "content": [
+            122,
+            69
+          ],
+          "has_alpha": true,
+          "kb": 12,
+          "status": "final",
+          "role": "开关·关",
+          "notes": "125×71"
+        },
+        {
+          "file": "geometric/ui_kit/components/toggle_on.png",
+          "canvas": [
+            125,
+            71
+          ],
+          "bbox": [
+            4,
+            1,
+            124,
+            69
+          ],
+          "content": [
+            120,
+            68
+          ],
+          "has_alpha": true,
+          "kb": 14,
+          "status": "final",
+          "role": "开关·开",
+          "notes": "125×71"
+        }
+      ]
+    },
+    {
+      "id": "geobear_parts_front",
+      "title": "几何熊 · 正面动画拆件 v2（10件+pivots+检查图）",
+      "count": 14,
+      "canvas": "1254×1254（部件与原图同画布、原位）",
+      "alpha": true,
+      "status": "final",
+      "items": [
+        {
+          "file": "geometric/geobear/parts/front/head.png",
+          "role": "头+双耳+五官（含颈部补画）"
+        },
+        {
+          "file": "geometric/geobear/parts/front/torso.png",
+          "role": "躯干+腹部色块（程序化重建表面）"
+        },
+        {
+          "file": "geometric/geobear/parts/front/upper_arm_r.png",
+          "role": "角色右上臂（屏幕左），肩部补画"
+        },
+        {
+          "file": "geometric/geobear/parts/front/upper_arm_l.png",
+          "role": "角色左上臂（屏幕右），肩部补画"
+        },
+        {
+          "file": "geometric/geobear/parts/front/forearm_r.png",
+          "role": "右前臂+灰护甲，肘部补画"
+        },
+        {
+          "file": "geometric/geobear/parts/front/forearm_l.png",
+          "role": "左前臂+灰护甲，肘部补画"
+        },
+        {
+          "file": "geometric/geobear/parts/front/claw_r.png",
+          "role": "右手掌+三爪，腕部补画"
+        },
+        {
+          "file": "geometric/geobear/parts/front/claw_l.png",
+          "role": "左手掌+三爪，腕部补画"
+        },
+        {
+          "file": "geometric/geobear/parts/front/leg_foot_r.png",
+          "role": "右腿+脚一体"
+        },
+        {
+          "file": "geometric/geobear/parts/front/leg_foot_l.png",
+          "role": "左腿+脚一体"
+        },
+        {
+          "file": "geometric/geobear/parts/front/pivots.json",
+          "role": "关节旋转中心/父子关系/绘制顺序"
+        },
+        {
+          "file": "geometric/geobear/parts/front/assembled_preview.png",
+          "role": "拼回对比原图（左拼右原）"
+        },
+        {
+          "file": "geometric/geobear/parts/front/parts_preview.png",
+          "role": "10件分开展示"
+        },
+        {
+          "file": "geometric/geobear/parts/front/articulation_preview.png",
+          "role": "抬臂90+弯肘90+转腕45 关节检查"
+        }
+      ],
+      "notes": "由 _tools/_split_geobear_front_v2.py 矢量重绘生成（轮廓凸包+RDP拟合、4x超采样AA、内部保留原图像素）。v1位图抠图版存档于 parts/front_v1_draft/（废弃勿用）。详见 parts/front/README.md。"
+    }
+  ],
+  "scripts": [
+    {
+      "file": "_tools/_make_transparent.py",
+      "purpose": "白底转透明（边缘洪泛 + 封闭亮腔补洞）",
+      "input": "ImageGen 白底 PNG",
+      "output": "cangzhua 八视图",
+      "runnable": false,
+      "why": "输入文件名已清理，仅作配方参考",
+      "key_params": "BG_TOL=42, BRIGHT=238",
+      "note": "脚本用 __file__ 定位，搬到 _tools/ 后需要把 BASE 指回素材目录才能跑。"
+    },
+    {
+      "file": "_tools/_compose_attack_sheet.py",
+      "purpose": "8 帧拼版：去白底→裁边→统一缩放→脚底基线对齐→4×2 浅灰板",
+      "input": "单帧",
+      "output": "cangzhua_attack_sweep_sheet.png",
+      "runnable": false,
+      "why": "_atk_f2..f7.png 源文件已删，需改 FRAMES",
+      "key_params": "CELL 768×1024, SHEET_BG #D9D6D4, 缩放 0.7347",
+      "note": "脚本用 __file__ 定位，搬到 _tools/ 后需要把 BASE 指回素材目录才能跑。"
+    },
+    {
+      "file": "_tools/_clean_flat.py",
+      "purpose": "平涂矢量风统一到 6 色标准色板 + 去背 + 1px 腐蚀去毛边",
+      "input": "生成原图",
+      "output": "geobear 八视图",
+      "runnable": false,
+      "why": "_geo_*.png 已删；色板本身可直接复用",
+      "key_params": "6 色 PALETTE, MinFilter(3), BG_TOL=42",
+      "note": "脚本用 __file__ 定位，搬到 _tools/ 后需要把 BASE 指回素材目录才能跑。"
+    },
+    {
+      "file": "_tools/_slice_components.py",
+      "purpose": "按手工矩形框把 UI 母板拆成 42 个透明组件",
+      "input": "ui_kit/geometric_ui_concept_v1.png",
+      "output": "ui_kit/components/*.png",
+      "runnable": true,
+      "why": "改 SRC 路径即可重跑（当前写死剪贴板副本路径）",
+      "key_params": "RECTS 为 1080×720 显示坐标，×1.4222 映射；自动收紧 + 边缘洪泛 + 1px 柔边",
+      "note": "脚本用 __file__ 定位，搬到 _tools/ 后需要把 BASE 指回素材目录才能跑。"
+    }
+  ],
+  "issues": [
+    {
+      "level": "P0",
+      "id": "scale-drift",
+      "title": "跨方向比例/基线不统一，直接切帧会跳",
+      "detail": "站立八视图内容高度 1185~1270px（差 7.2%），脚底 y 1326~1429；四足套 858~1149px（差 33.9%）；几何熊 908~1141px（差 25.7%），且 01 画布尺寸与其他不同。",
+      "fix": "入库前统一缩放到同一身高、按脚底对齐到同一基线，再导出 512×512 或 1024×1024 定尺图集。"
+    },
+    {
+      "level": "P0",
+      "id": "frame-canvas",
+      "title": "攻击单帧画布各异且紧裁切",
+      "detail": "f01 980×1185、f03 921×1075、f04~f06 847×10xx……bbox 等于整张画布，没有留白参考，帧间位置漂移无法靠引擎自动纠正。",
+      "fix": "按统一画布重排（建议 1024×1024，脚底 y=980，身体中心 x=512），保留每帧相对位移。"
+    },
+    {
+      "level": "P1",
+      "id": "ui-crop-residue",
+      "title": "5 个面板/提示条顶部带进分区标题线",
+      "detail": "panel_menu 顶部有 \"ANELS\" 字样残片；panel_dialog / panel_results / plate_hint_large / plate_hint_small 顶部有一条细横线（母板的分区分隔线）。",
+      "fix": "重切时把这 5 个 RECT 的 y0 下移 6~10px，或切完擦掉顶部 2~4 行。"
+    },
+    {
+      "level": "P1",
+      "id": "watermark",
+      "title": "展示板右下角有\"AI生成\"水印",
+      "detail": "只要 09-14-36 那版；geometric_ui_concept_v1.png 已经是干净的母本，不必再处理。",
+      "fix": "无（已解决）。"
+    },
+    {
+      "level": "resolved",
+      "id": "orphan-import",
+      "title": "孤立 .import 已清理（原 15 个）",
+      "detail": "2026-10-22 重排目录时把所有 .import 一并删除，由 Godot --headless --import 全部重建，现有 84 个 PNG 对应 84 个 .import，无孤立项。",
+      "fix": "无需处理。注意：今后改名/移动务必连同 .import 一起动，或删掉让它重建。"
+    },
+    {
+      "level": "P2",
+      "id": "geobear-angle",
+      "title": "几何熊 02 视角偏侧",
+      "detail": "标称前右斜 45°，实际接近 60~70°，与 04 后右斜的区分度不足。",
+      "fix": "如需严格 45°，从正面/侧面反向\"转回 45°\"比从正面转出更稳。"
+    },
+    {
+      "level": "P2",
+      "id": "size",
+      "title": "分辨率远超游戏需要",
+      "detail": "角色 1024×1536、拼版 3072×2048、Boss 血条 879px 宽；Godot 导入为无损压缩、无 mipmap，显存与包体都偏大。",
+      "fix": "按实际显示尺寸下采样（角色约 256~384px 高、UI 件 0.5×），或改用图集。"
+    }
+  ],
+  "gaps": [
+    "没有行走/受击/死亡/弹反/蓄力等其它动作帧，目前只有一套\"右臂横扫\"。",
+    "没有武器（飞刀）贴图，而 docs/art-integration.md 的武器接口需要\"刀尖像素坐标\"。",
+    "Boss 没有做部件拆分（头/躯干/左右臂/爪），无法做骨骼或分件动画。",
+    "UI 拆件没有标注九宫格边距，面板/血条拉伸会被描边变形。",
+    "没有 tpsheet/atlas 或 SpriteFrames 资源，Godot 里仍需手工建 AnimatedSprite2D。"
+  ],
+  "related_docs": [
+    "../../docs/art-integration.md",
+    "../../docs/monster-art-prompts.md",
+    "../../docs/monster-attack-prompts.md",
+    "../../docs/geometric-ui-prompts.md"
+  ]
+}

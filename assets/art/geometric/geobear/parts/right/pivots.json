@@ -1,0 +1,75 @@
+{
+  "canvas": [
+    1024,
+    1024
+  ],
+  "coordinate_system": "origin top-left, +X right, +Y down, pixels of the 1024x1024 master canvas",
+  "source_view": "geobear_stand_03_right.png（纯侧面，鼻尖朝画面右）",
+  "root": {
+    "pos": [
+      518,
+      957
+    ],
+    "note": "整体定位点：脚掌底边中点"
+  },
+  "parts": {
+    "torso": {
+      "pivot": [
+        622,
+        578
+      ],
+      "parent": null,
+      "note": "腹部色块中心，整棵树的根"
+    },
+    "head": {
+      "pivot": [
+        508,
+        352
+      ],
+      "parent": "torso",
+      "note": "颈部连接处（人工切割线中点）"
+    },
+    "upper_arm": {
+      "pivot": [
+        452,
+        332
+      ],
+      "parent": "torso",
+      "note": "肩关节（上臂顶）"
+    },
+    "forearm": {
+      "pivot": [
+        455,
+        508
+      ],
+      "parent": "upper_arm",
+      "note": "肘关节（上臂底/护甲顶）"
+    },
+    "claw": {
+      "pivot": [
+        470,
+        690
+      ],
+      "parent": "forearm",
+      "note": "腕关节（掌顶）"
+    },
+    "leg_foot": {
+      "pivot": [
+        492,
+        812
+      ],
+      "parent": "torso",
+      "note": "髋部（腿柱顶，缺口被爪件遮盖）"
+    }
+  },
+  "draw_order_back_to_front": [
+    "torso",
+    "leg_foot",
+    "upper_arm",
+    "forearm",
+    "claw",
+    "head"
+  ],
+  "mirror_rule": "左侧面（stand_07）= mirror(本套)，pivot.x' = 1024 - pivot.x",
+  "notes": "侧面只见近侧手臂与单腿；头背切割线开边不描线；爪根不封口（手册 §6）。"
+}

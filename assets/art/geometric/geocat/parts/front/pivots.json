@@ -1,0 +1,82 @@
+{
+  "canvas": [
+    1024,
+    1024
+  ],
+  "coordinate_system": "origin top-left, +X right, +Y down, pixels of the 1024x1024 master canvas",
+  "root": {
+    "pos": [
+      453,
+      889
+    ],
+    "note": "整体定位点：四脚脚底中央的底边中点"
+  },
+  "parts": {
+    "torso": {
+      "pivot": [
+        458,
+        630
+      ],
+      "parent": null,
+      "note": "躯干中心，整棵树的根"
+    },
+    "head": {
+      "pivot": [
+        512,
+        540
+      ],
+      "parent": "torso",
+      "note": "颈部连接处"
+    },
+    "tail": {
+      "pivot": [
+        670,
+        685
+      ],
+      "parent": "torso",
+      "note": "尾根（藏在躯干右后）"
+    },
+    "leg_fr": {
+      "pivot": [
+        428,
+        762
+      ],
+      "parent": "torso",
+      "note": "右前腿肩关节（角色右=屏幕左，深色的远侧腿）"
+    },
+    "leg_fl": {
+      "pivot": [
+        505,
+        762
+      ],
+      "parent": "torso",
+      "note": "左前腿肩关节"
+    },
+    "leg_br": {
+      "pivot": [
+        290,
+        758
+      ],
+      "parent": "torso",
+      "note": "右后腿髋部（屏幕左外侧）"
+    },
+    "leg_bl": {
+      "pivot": [
+        632,
+        758
+      ],
+      "parent": "torso",
+      "note": "左后腿髋部（屏幕右外侧）"
+    }
+  },
+  "draw_order_back_to_front": [
+    "tail",
+    "torso",
+    "leg_fr",
+    "leg_fl",
+    "leg_br",
+    "leg_bl",
+    "head"
+  ],
+  "notes": "四足猫：熊方案的上臂/前臂/手掌对应四条腿（腿脚暂不细分）。leg_fr 是原图中颜色偏深的远侧前腿。"
+}

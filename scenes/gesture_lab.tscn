@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bb50tjg7ccsan"]
+
+[ext_resource type="PackedScene" path="res://scenes/battle.tscn" id="1"]
+
+[node name="GestureLab" instance=ExtResource("1")]
+initial_mode = 1

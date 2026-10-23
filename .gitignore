@@ -1,0 +1,35 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+/.mcp-tools/
+
+# Local MCP credentials/settings; never commit session tokens.
+/.mcp.json
+**/mcp_token
+**/project_instance_*/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Dependencies, generated caches, installers and temporary outputs.
+node_modules/
+__pycache__/
+*.pyc
+*.log
+*.tmp
+*.bak
+*.zip
+*.7z
+*.exe
+*.msi
+/.tmp/
+/tmp/
+/build/
+/dist/
+/export_templates/
+Thumbs.db
+.DS_Store
+# Assistant-local working notes, not required art sources.
+.workbuddy/

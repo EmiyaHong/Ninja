@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/actor_view.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/geobear_visual.tscn" id="2"]
+[node name="BossBody" type="Node2D"]
+script = ExtResource("1")
+tint = Color(0.863, 0.549, 0.514, 1)
+actor_scale = 1.0
+actor_visual_scene = ExtResource("2")
+left_shoulder_position = Vector2(-71.94, 0.32)
+right_shoulder_position = Vector2(71.94, 0.32)
+[node name="VisualRoot" type="Node2D" parent="."]
+[node name="GeoBear" parent="VisualRoot" instance=ExtResource("2")]
+[node name="LeftShoulder" type="Marker2D" parent="."]
+position = Vector2(-71.94, 0.32)
+[node name="RightShoulder" type="Marker2D" parent="."]
+position = Vector2(71.94, 0.32)

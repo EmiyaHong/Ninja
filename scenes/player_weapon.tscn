@@ -1,0 +1,51 @@
+[gd_scene format=4 uid="uid://bq8rmtia2mbb1"]
+
+[ext_resource type="Script" uid="uid://c7c68uy1eqhow" path="res://scripts/weapon_controller.gd" id="1"]
+[ext_resource type="Shader" uid="uid://cmegoc5a4h2tg" path="res://shaders/blade_trail.gdshader" id="2"]
+[ext_resource type="Script" uid="uid://cpxce6qiaidi3" path="res://scripts/blade_trail.gd" id="3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_trail"]
+resource_local_to_scene = true
+shader = ExtResource("2")
+shader_parameter/light_color = Color(0.78, 0.89, 0.91, 0.72)
+shader_parameter/samples = PackedVector4Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/sample_count = 0
+shader_parameter/clock_seconds = 0.0
+shader_parameter/fade_seconds = 0.22
+shader_parameter/visible_length = 320.0
+shader_parameter/stroke_distance = 0.0
+shader_parameter/trail_width = 32.0
+
+[sub_resource type="Gradient" id="Gradient_white"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture_trail"]
+gradient = SubResource("Gradient_white")
+width = 8
+height = 8
+
+[node name="PlayerWeapon" type="Node2D" unique_id=312992720]
+script = ExtResource("1")
+tint = Color(0.5548724, 0.89503706, 0.93754315, 1)
+trail_material = SubResource("ShaderMaterial_trail")
+trail_texture = SubResource("GradientTexture_trail")
+trail_width = 100.0
+trail_color = Color(0.3787096, 0.7655098, 0.9999998, 1)
+
+[node name="Trail" type="Line2D" parent="." unique_id=898097103]
+z_index = -1
+material = SubResource("ShaderMaterial_trail")
+width = 80.0
+default_color = Color(0.66947186, 0.8630456, 0.9896578, 1)
+texture = SubResource("GradientTexture_trail")
+texture_mode = 2
+joint_mode = 2
+antialiased = true
+script = ExtResource("3")
+fade_seconds = 0.45899999999999996
+
+[node name="BladePivot" type="Node2D" parent="." unique_id=695657289]
+
+[node name="Visual" type="Node2D" parent="BladePivot" unique_id=471362211]
+
+[node name="Tip" type="Marker2D" parent="BladePivot" unique_id=1497013619]

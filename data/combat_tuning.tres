@@ -1,0 +1,10 @@
+[gd_resource type="Resource" format=3 uid="uid://bnyjc3ah4h58n"]
+
+[ext_resource type="Script" uid="uid://uwji2mtog24y" path="res://scripts/combat_tuning.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+player_health = 10000.0
+parry_window = 1.0
+minimum_distance_ratio = 0.02
+direction_tolerance_degrees = 90.0

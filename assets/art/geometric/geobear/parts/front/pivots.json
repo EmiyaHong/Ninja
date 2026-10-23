@@ -1,0 +1,109 @@
+{
+  "canvas": [
+    1254,
+    1254
+  ],
+  "coordinate_system": "origin top-left, +X right, +Y down, pixels of the 1254x1254 master canvas",
+  "root": {
+    "pos": [
+      627,
+      1164
+    ],
+    "note": "整体定位点：两脚脚底中央的底边中点"
+  },
+  "parts": {
+    "torso": {
+      "pivot": [
+        627,
+        590
+      ],
+      "parent": null,
+      "note": "躯干中心（腹部色块中心），整棵树的根"
+    },
+    "head": {
+      "pivot": [
+        627,
+        400
+      ],
+      "parent": "torso",
+      "note": "颈部连接处"
+    },
+    "upper_arm_r": {
+      "pivot": [
+        300,
+        420
+      ],
+      "parent": "torso",
+      "note": "肩关节（角色右侧=屏幕左侧）"
+    },
+    "upper_arm_l": {
+      "pivot": [
+        954,
+        420
+      ],
+      "parent": "torso",
+      "note": "肩关节"
+    },
+    "forearm_r": {
+      "pivot": [
+        270,
+        585
+      ],
+      "parent": "upper_arm_r",
+      "note": "肘关节"
+    },
+    "forearm_l": {
+      "pivot": [
+        984,
+        585
+      ],
+      "parent": "upper_arm_l",
+      "note": "肘关节"
+    },
+    "claw_r": {
+      "pivot": [
+        190,
+        852
+      ],
+      "parent": "forearm_r",
+      "note": "腕关节"
+    },
+    "claw_l": {
+      "pivot": [
+        1064,
+        852
+      ],
+      "parent": "forearm_l",
+      "note": "腕关节"
+    },
+    "leg_foot_r": {
+      "pivot": [
+        465,
+        845
+      ],
+      "parent": "torso",
+      "note": "髋部连接处"
+    },
+    "leg_foot_l": {
+      "pivot": [
+        789,
+        845
+      ],
+      "parent": "torso",
+      "note": "髋部连接处"
+    }
+  },
+  "draw_order_back_to_front": [
+    "torso",
+    "leg_foot_r",
+    "leg_foot_l",
+    "forearm_r",
+    "forearm_l",
+    "upper_arm_r",
+    "upper_arm_l",
+    "claw_r",
+    "claw_l",
+    "head"
+  ],
+  "mirror_rule": "右侧部件 pivot.x = 1254 - 左侧对应 pivot.x"
+}
