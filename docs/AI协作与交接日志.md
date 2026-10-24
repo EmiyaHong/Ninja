@@ -29,7 +29,7 @@
 2. 保留用户未提交的修改（参数、美术、刀光等）。动手前先 `git status`，不得 reset/checkout/clean 他人改动。
 3. 同一文件同一时间只允许一个 agent 编辑；开工前在 §7 登记，完成后释放。
 4. 状态必须分清：现有实现 / 讨论提案 / 已授权实验 / 已实现待试玩 / 用户确认。不编造指标和手感结论。
-5. 设计类结论追加到 `docs/design-journal.md`（保留被修正的历史并写明原因，不记录内部思维链）；实现与验证记录写入 `docs/implementation-status.md` 并链接测试。
+5. 设计类结论追加到 `docs/战斗设计讨论日志.md`（保留被修正的历史并写明原因，不记录内部思维链）；实现与验证记录写入 `docs/代码实现与验证记录.md` 并链接测试。
 6. 提交信息使用中文，沿用现有风格；非用户要求不 push、不改 `.git` 配置。
 7. 不改 `project.godot` 的 autoload/插件配置，除非任务明确要求。
 
@@ -42,15 +42,15 @@
 | **用户** | 产品负责人与设计决策者；真人试玩、手感反馈、最终取舍 |
 | **Codex** | 执行者：实现代码/场景/测试、跑验证、更新文档；额度可用时优先工作 |
 | **Antigravity（Claude Opus 5.5，本 agent）** | 与 Codex 相同的执行者；Codex 无额度时接手，也可并行。偏长的代码审阅、重构、长文档与调研 |
-| **Sol / “设计聊天”** | 历史文档中出现的名称（Sol 为执行者，设计聊天负责讨论与 `design-journal.md`）。其工作现由 Codex/Antigravity 承担，沿用同一套规则 |
+| **Sol / “设计聊天”** | 历史文档中出现的名称（Sol 为执行者，设计聊天负责讨论与 `战斗设计讨论日志.md`）。其工作现由 Codex/Antigravity 承担，沿用同一套规则 |
 
 默认两边都做同样的事、不预设分区；用户若另行指定按擅长领域拆分，以 §7 登记板为准。无论谁做，都遵守 §2，不擅自扩大范围。
 
 ### 接力规则（本地与 GitHub 多人/多 Agent 协作硬性要求）
 
-1. **接手前**：读 `README.md`、本文 §7 最近条目与 §8 交接摘要、`design-journal.md` 近期条目、`implementation-status.md` 末段，并执行 `git status` / `git log -5`（若已连 GitHub 远程，先确认是否需要 `git pull`）。
+1. **接手前**：读 `README.md`、本文 §7 最近条目与 §8 交接摘要、`战斗设计讨论日志.md` 近期条目、`代码实现与验证记录.md` 末段，并执行 `git status` / `git log -5`（若已连 GitHub 远程，先确认是否需要 `git pull`）。
 2. **工作中**：占用文件先在 §7 登记；额度随时可能耗尽，所以每完成一个独立小步骤就更新一次，不要攒到最后。
-3. **工作后（或预感额度将尽时）**：必须同步更新 `implementation-status.md`（工程细节与验证）、`design-journal.md`（设计决策）、本文 §7/§8（接力摘要）以及 `README.md`（若进度/操作变化），清楚交代**「这次干了什么、进行到哪里、下一步要干什么」**，随后执行本地中文 `git commit`。
+3. **工作后（或预感额度将尽时）**：必须同步更新 `代码实现与验证记录.md`（工程细节与验证）、`战斗设计讨论日志.md`（设计决策）、本文 §7/§8（接力摘要）以及 `README.md`（若进度/操作变化），清楚交代**「这次干了什么、进行到哪里、下一步要干什么」**，随后执行本地中文 `git commit`。
 
 ### 交接格式（任何 agent 完成任务时写入 §7 或实现状态文档）
 
@@ -72,12 +72,12 @@
 ## 5. 文档索引
 
 - `AGENTS.md`：用户规则（最高优先级）
-- `docs/design-journal.md`：设计讨论日志（先读近期条目）
-- `docs/implementation-status.md`：实现与验证记录
-- `docs/demo-roadmap.md`：Demo 路线与阶段清单
-- `docs/combat-demo-plan.md`：战斗 Demo 方案
-- `docs/parry-ab-playtest.md`、`docs/directional-gesture-playtest.md`：试玩/实验记录
-- `docs/git-baseline.md`：基线记录；`docs/art-integration.md` 等：美术接入与提示词
+- `docs/战斗设计讨论日志.md`：设计讨论日志（先读近期条目）
+- `docs/代码实现与验证记录.md`：实现与验证记录
+- `docs/面试Demo进度清单.md`：Demo 路线与阶段清单
+- `docs/战斗Demo方案计划书.md`：战斗 Demo 方案
+- `docs/弹反AB对照试玩说明.md`、`docs/方向手势实验试玩说明.md`：试玩/实验记录
+- `docs/Git版本基线记录.md`：基线记录；`docs/美术资源接入说明.md` 等：美术接入与提示词
 
 ## 6. Godot MCP
 
@@ -93,15 +93,16 @@
 
 | 日期 | Agent | 任务 | 占用文件 | 状态 |
 |---|---|---|---|---|
-| 2026-10-24 | Antigravity | 建立本手册、配置 Godot MCP、补 Godot 路径、确立双执行者规则 | `docs/agent-collaboration.md`、`AGENTS.md` | 完成；验证：combat_tests 101/0；无待办，等用户指派 |
-| 2026-10-24 | Antigravity 主聊天（验收）+ 执行子 agent | D016：1 号模式角色移动、飞剑圆内范围、网格地图扩大 | `scripts/battle_controller.gd`、`scripts/gesture_input.gd`、`tests/movement_tests.*`、`tests/combat_tests.gd`、`tests/interaction_tests.gd`、`docs/implementation-status.md`、`docs/design-journal.md` | 完成（已实现待试玩）；验证：movement 39/0、combat 101/0、parry_ab 41/0、geobear 89/0、directional 34/0（共 304 项 0 失败）；已释放全部文件占用 |
-| 2026-10-24 | Antigravity | D017：1 号模式飞剑圈严格最大攻击判定范围 + 受击框/进圈高亮可视化 | `scripts/blade_hit_test.gd`、`scripts/battle_controller.gd`、`tests/movement_tests.gd`、`docs/design-journal.md`、`docs/implementation-status.md` | 完成（已实现待试玩）；验证：movement 42/0、combat 101/0；已释放全部文件占用 |
-| 2026-10-24 | Antigravity | D018：弹反距离限制（双爪判定框进飞剑圈 + 挥刀触爪）、Boss 追击 AI、玩家受击框与爪击碰撞、确认 B 严格反向、设计思维导图 | `scripts/battle_controller.gd`、`scripts/boss_controller.gd`、`tests/movement_tests.gd`、`docs/design-journal.md`、`docs/implementation-status.md` | 完成（已实现待试玩）；验证：movement 51/0、combat 101/0、parry_ab 41/0、geobear 89/0、directional 34/0（共 316 项 0 失败）；已释放全部文件占用 |
-| 2026-10-24 | Antigravity | 建立 GitHub 远程仓库连接（SSH 443 端口免密推送）与首页 `README.md`、四件套收工同步规范 | `README.md`、`AGENTS.md`、`docs/agent-collaboration.md`、`docs/implementation-status.md` | 完成；`main` 与 `baseline-2026-10-23` 已推送至 `https://github.com/EmiyaHong/Ninja` |
+| 2026-10-24 | Antigravity | 建立本手册、配置 Godot MCP、补 Godot 路径、确立双执行者规则 | `docs/AI协作与交接日志.md`、`AGENTS.md` | 完成；验证：combat_tests 101/0；无待办，等用户指派 |
+| 2026-10-24 | Antigravity 主聊天（验收）+ 执行子 agent | D016：1 号模式角色移动、飞剑圆内范围、网格地图扩大 | `scripts/battle_controller.gd`、`scripts/gesture_input.gd`、`tests/movement_tests.*`、`tests/combat_tests.gd`、`tests/interaction_tests.gd`、`docs/代码实现与验证记录.md`、`docs/战斗设计讨论日志.md` | 完成（已实现待试玩）；验证：movement 39/0、combat 101/0、parry_ab 41/0、geobear 89/0、directional 34/0（共 304 项 0 失败）；已释放全部文件占用 |
+| 2026-10-24 | Antigravity | D017：1 号模式飞剑圈严格最大攻击判定范围 + 受击框/进圈高亮可视化 | `scripts/blade_hit_test.gd`、`scripts/battle_controller.gd`、`tests/movement_tests.gd`、`docs/战斗设计讨论日志.md`、`docs/代码实现与验证记录.md` | 完成（已实现待试玩）；验证：movement 42/0、combat 101/0；已释放全部文件占用 |
+| 2026-10-24 | Antigravity | D018：弹反距离限制（双爪判定框进飞剑圈 + 挥刀触爪）、Boss 追击 AI、玩家受击框与爪击碰撞、确认 B 严格反向、设计思维导图 | `scripts/battle_controller.gd`、`scripts/boss_controller.gd`、`tests/movement_tests.gd`、`docs/战斗设计讨论日志.md`、`docs/代码实现与验证记录.md` | 完成（已实现待试玩）；验证：movement 51/0、combat 101/0、parry_ab 41/0、geobear 89/0、directional 34/0（共 316 项 0 失败）；已释放全部文件占用 |
+| 2026-10-24 | Antigravity | 建立 GitHub 远程仓库连接（SSH 443 端口免密推送）与首页 `README.md`、四件套收工同步规范 | `README.md`、`AGENTS.md`、`docs/AI协作与交接日志.md`、`docs/代码实现与验证记录.md` | 完成；`main` 与 `baseline-2026-10-23` 已推送至 `https://github.com/EmiyaHong/Ninja` |
+| 2026-10-24 | Antigravity | 将 `docs/` 下全部 15 份 Markdown 文档改为中文命名，并新增 §9 双 AI 沟通与协作大意（供用户直接阅读） | `docs/*.md`、`AGENTS.md`、`README.md` | 完成；已释放全部文件占用 |
 
 ## 8. 致 Codex 的最新交接摘要（2026-10-24，Codex 无额度期间 Antigravity 完成项）
 
-Codex 接手时请直接阅读本节，并对照 `docs/design-journal.md`（D016–D018）与 `docs/implementation-status.md`（末尾 D016–D018 章节）：
+Codex 接手时请直接阅读本节，并对照 `docs/战斗设计讨论日志.md`（D016–D018）与 `docs/代码实现与验证记录.md`（末尾 D016–D018 章节）：
 
 1. **我们在你无额度期间做了什么（D016 → D018 + GitHub 远程绑定）**：
    - **D016（1 号模式角色移动 + 飞剑圆 + 3×3 网格地图）**：
@@ -114,10 +115,10 @@ Codex 接手时请直接阅读本节，并对照 `docs/design-journal.md`（D016
      - **弹反距离限制**：实时读取几何熊左右爪关节生成两个 `124×124` 的爪子判定框（`boss_claw_hurtboxes()`）；1 号模式下只有当 Boss 挥击爪的判定框进入玩家 `sword_radius` 圆内，且窗口内划出 **B 严格反向** 手势才能弹反（禁止远处隔空弹反）。
      - **Boss 追击 AI**：Boss 在 `idle` 阶段以 `boss_move_speed = 150.0` 追向玩家上方对峙点 `player_view.position + Vector2(0, -230)`；玩家跑远超出交战距离时 `boss.can_start_attack = false`，追近后再蓄力出招。
      - **玩家受击框与走位闪避**：新增 `player_hurtbox()`（`64×96`）与 `_boss_attack_hits_player()`，Boss 落爪时刻若玩家已走位跑出 `boss_attack_reach_box()` 则无伤闪避。
-     - **用户设计拍板**：正式选定 **B 严格反向**（`training_rule` 默认值已改为 `1`）；5 号方向手势（`directional_combat.gd`）的设计目的明确为“限制玩家不能永远在远处安全打击”，代码完整保留供后续收敛统一战斗风格；已在 `docs/design-journal.md` D018 绘制 Mermaid 思维导图。
+     - **用户设计拍板**：正式选定 **B 严格反向**（`training_rule` 默认值已改为 `1`）；5 号方向手势（`directional_combat.gd`）的设计目的明确为“限制玩家不能永远在远处安全打击”，代码完整保留供后续收敛统一战斗风格；已在 `docs/战斗设计讨论日志.md` D018 绘制 Mermaid 思维导图。
    - **GitHub 远程仓库与免密推送已就绪**：
      - 远程 `origin` 已绑定为 `ssh://git@ssh.github.com:443/EmiyaHong/Ninja.git`（已配置 `core.sshCommand = "ssh -p 443 -o StrictHostKeyChecking=accept-new"` 绕过本地代理对 22 端口的拦截），`main` 分支与 `baseline-2026-10-23` 标签均已成功推送。
-     - 新增了根目录 `README.md`，并在 `AGENTS.md` 固化了每次收工同步更新「四件套文档」（`implementation-status.md`、`design-journal.md`、`agent-collaboration.md`、`README.md`）的规范。
+     - 新增了根目录 `README.md`，并在 `AGENTS.md` 固化了每次收工同步更新「四件套文档」（`代码实现与验证记录.md`、`战斗设计讨论日志.md`、`AI协作与交接日志.md`、`README.md`）的规范。
 2. **新增与修改的测试（全部 0 失败，共 316 项）**：
    - 新增 `tests/movement_tests.gd` + `tests/movement_tests.tscn`：**51 checks, 0 failures**
    - `tests/combat_tests.tscn`：**101 checks, 0 failures**（仅将第 90 行远点刀尖坐标断言改为 `battle.clamp_tip(Vector2(730, 280))`）
@@ -126,5 +127,17 @@ Codex 接手时请直接阅读本节，并对照 `docs/design-journal.md`（D016
    - `tests/directional_combat_tests.tscn`：**34 checks, 0 failures**
 3. **当前 Git 状态与建议下一步**：
    - 本地 `main` 与远程 `origin/main` 已完全同步且工作区干净（用户原有的 `data/combat_tuning.tres` 调试参数、美术、刀光均完好未动）。
-   - 下一步待用户在编辑器内按 `F5` 真人试玩 1 号模式（WASD 移动 + 熊追人 + 双爪进圈弹反/走位闪避），根据手感反馈调整移速/半径，或推进 `docs/demo-roadmap.md` 阶段 2（Boss 连段招式表编排）。
+   - **重要文件名变更提示**：按用户要求，`docs/` 下全部 15 份 `.md` 文档已统一重命名为中文文件名（见 §5 文档索引），Godot 引擎使用的 `scripts/`、`scenes/`、`tests/`、`data/`、`assets/`、`docs/screenshots/` 保持英文路径以确保引擎资源与 UID 引用稳定。
+   - 下一步待用户在编辑器内按 `F5` 真人试玩 1 号模式（WASD 移动 + 熊追人 + 双爪进圈弹反/走位闪避），根据手感反馈调整移速/半径，或推进 `docs/面试Demo进度清单.md` 阶段 2（Boss 连段招式表编排）。
+
+## 9. 双 AI（Antigravity ↔ Codex）沟通大意白话记录（供用户随时检阅）
+
+> **说明**：每次 Antigravity 或 Codex 完成一轮工作，除了在 §8 写技术交接外，都在本节用几句大白话告诉用户**「这一棒我替对端 AI 做了什么、给对端留了什么话」**。
+
+- **2026-10-24（第 1 棒 · Antigravity 接替无额度的 Codex）**：
+  - **接班背景**：Codex 额度用尽前刚做完 5 号方向手势实验与按键修复（提交 `2257fb9`）。
+  - **本棒完成大意**：按你的要求，在 **1 号模式** 里做出了全套空间移动战斗——`WASD` 八向走位、3×3 扩大网格地图与镜头跟随、飞剑限制在角色周围 `260px` 圈内（圈外刀身不越界蹭伤、进圈变亮）、**弹反限制在几何熊双爪判定框进圈时才触发**、**Boss 待机自动追人 AI**、**玩家独立受击框（可走位躲开爪击）**，并把你最终拍板的 **「B 严格反向」** 设为默认规则，画好了战斗设计演进思维导图，跑通了全部 **316 项自动化测试（0 失败）**。
+  - **仓库与文档整理**：帮你配置好 SSH 443 端口免密通道并把整个仓库推上了 GitHub（`https://github.com/EmiyaHong/Ninja`），同时把 `docs/` 下全部 15 个英文文档名改成了直观的中文名。
+  - **给下一棒 AI（Codex 或我）留的话**：代码和 316 项测试全绿，别删 5 号方向手势和 4 号木桩 A/B 代码，别动用户在 `data/combat_tuning.tres` 里的调试参数；等用户按 `F5` 试玩反馈移速/飞剑圈大小的手感后，再接着调参或做 Boss 的 3–4 套连段招式表。
+
 

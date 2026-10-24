@@ -88,7 +88,7 @@ Shader 可以参与绘制，也能自己生成固定刀光形状，但不会自�
 
 ## 4. 当前项目里如何挂材质
 
-以下入口来自当前 scripts/weapon_controller.gd 和 docs/art-integration.md。
+以下入口来自当前 scripts/weapon_controller.gd 和 docs/美术资源接入说明.md。
 
 1. 结束正在运行的游戏，保持 Godot 编辑器打开。
 2. 在 FileSystem 面板打开 scenes/player_weapon.tscn。Boss 则打开 scenes/boss_weapon.tscn。
@@ -128,4 +128,4 @@ Shader 可以参与绘制，也能自己生成固定刀光形状，但不会自�
 - 辉光边缘被切掉：Shader 的绘制范围受承载它的几何形状限制，需要预留更宽的显示范围或使用合适的辉光方案。
 - 调粗刀迹后伤害范围不变：这是预期。Trail Width 只改外观，真实武器尺寸另有参数。
 
-完整素材挂接说明另见 [art-integration.md](art-integration.md)。
+完整素材挂接说明另见 [美术资源接入说明.md](美术资源接入说明.md)。

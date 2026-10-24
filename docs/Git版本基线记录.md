@@ -8,7 +8,7 @@
 
 忽略 `.godot` 缓存、`.mcp-tools` 工具安装及依赖、node_modules、Python缓存、压缩安装包、日志、临时文件、构建产物、本机 `.mcp.json`、MCP 会话令牌及实例目录、环境文件/私钥和 `.workbuddy` 本机工作记录。`.import` 是源文件导入设置，纳入版本控制；实际导入缓存不纳入。未删除上述本地文件。
 
-主聊天正在写的 `docs/design-journal.md`、`docs/demo-roadmap.md`、`docs/visual-target-art-direction.md`、`assets/art/concepts/` 本次先不暂存，等待完成通知后另行提交；这些路径没有被忽略。基线允许有这些未跟踪/待提交文件，不应据此清理工作目录。
+主聊天正在写的 `docs/战斗设计讨论日志.md`、`docs/面试Demo进度清单.md`、`docs/视觉目标与美术规范.md`、`assets/art/concepts/` 本次先不暂存，等待完成通知后另行提交；这些路径没有被忽略。基线允许有这些未跟踪/待提交文件，不应据此清理工作目录。
 
 ## 本次验证
 
@@ -39,7 +39,7 @@ git diff baseline-2026-10-23 -- scripts scenes data shaders
 
 ## 已创建的提交
 
-基线：`49f627e09330feaf84016d6e5d2c508e2be524e8`，标签 `baseline-2026-10-23`，683 文件。随后仅提交本段记录，不修改该基线标签。提交后仍未跟踪的视觉工作包括上述四个路径及新出现的 `docs/visual-target-prompts.md`；均留给主聊天完成后纳入，不把正在生成中的版本放进基线。
+基线：`49f627e09330feaf84016d6e5d2c508e2be524e8`，标签 `baseline-2026-10-23`，683 文件。随后仅提交本段记录，不修改该基线标签。提交后仍未跟踪的视觉工作包括上述四个路径及新出现的 `docs/视觉目标提示词.md`；均留给主聊天完成后纳入，不把正在生成中的版本放进基线。
 
 ### 视觉资料完成后的追加提交
 

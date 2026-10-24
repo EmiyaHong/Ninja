@@ -45,7 +45,7 @@
   - 给弹反加上**双爪距离限制**（以几何熊左右双爪 `boss_claw_hurtboxes` 为判定框，进飞剑圈才能弹反）；
   - 加入 **Boss 待机追击 AI** 与 **玩家受击框（`player_hurtbox`）走位闪避判定**；
   - 正式确认弹反采用 **B 严格反向**；
-  - 在 [`docs/design-journal.md`](docs/design-journal.md) D018 绘制了完整的**战斗设计演进思维导图（Mind Map）**。
+  - 在 [`docs/战斗设计讨论日志.md`](docs/战斗设计讨论日志.md) D018 绘制了完整的**战斗设计演进思维导图（Mind Map）**。
 
 ### 下一步要干什么（待办路线）
 1. **真人试玩验收（当前最优先）**：运行 1 号模式，实测 `WASD` 移动速度（`320`）、飞剑半径（`260`）、Boss 追击速度（`150`）与双爪弹反距离的手感是否舒适。
@@ -65,13 +65,20 @@
 ├─ data/                           # 战斗与训练调参资源（.tres）
 ├─ tests/                          # Godot 内置自动化测试套件（5 大测试场景，共 316 项检查）
 └─ docs/
-   ├─ agent-collaboration.md       # 【AI 接力入口】多 Agent 协作手册、文件锁登记板、致 Codex 交接摘要
-   ├─ design-journal.md            # 【策划核心】战斗设计讨论日志（D001–D018 完整拆解 + 思维导图）
-   ├─ implementation-status.md     # 【工程交接】每次实现的改动文件、技术细节与测试验证记录
-   ├─ demo-roadmap.md              # 面试 Demo 六阶段推进清单
-   └─ combat-demo-plan.md          # 早期战斗原型计划书
+   ├─ AI协作与交接日志.md             # 【AI 接力入口】多 Agent 协作手册、文件锁登记板、致 Codex 交接摘要、双 AI 沟通大意
+   ├─ 战斗设计讨论日志.md             # 【策划核心】战斗设计讨论日志（D001–D018 完整拆解 + 思维导图）
+   ├─ 代码实现与验证记录.md           # 【工程交接】每次实现的改动文件、技术细节与测试验证记录
+   ├─ 面试Demo进度清单.md             # 面试 Demo 六阶段推进清单
+   ├─ 战斗Demo方案计划书.md           # 早期战斗原型计划书
+   ├─ 弹反AB对照试玩说明.md           # 4号模式：弹反 A/B 对照实验说明
+   ├─ 方向手势实验试玩说明.md         # 5号模式：方向手势飞剑实验说明
+   ├─ Git版本基线记录.md              # Git 首个可运行基线说明
+   ├─ 美术资源接入说明.md             # 角色、武器、刀光美术替换规范
+   ├─ 刀光Shader选型指南.md           # 刀光材质与 Shader 说明
+   ├─ 视觉目标与美术规范.md           # v02 整体构图与光影目标
+   └─ 视觉目标提示词.md / 怪物美术提示词.md / 怪物攻击动作提示词.md / 几何风UI提示词.md
 ```
 
 ### AI Agent（Codex / Antigravity）协作铁律
-- **开工前**：必读 `AGENTS.md`、`docs/agent-collaboration.md`（§7 登记板 & §8 最新交接）、`docs/design-journal.md` 近期条目与 `docs/implementation-status.md` 末段，并先看 `git status`。
-- **收工前**：每次改动后必须运行无头测试回归，并同步更新 `docs/implementation-status.md`、`docs/design-journal.md`、`docs/agent-collaboration.md` 与 `README.md`（写清**干了什么、进行到哪、下一步干什么**），最后执行中文 `git commit`。
+- **开工前**：必读 `AGENTS.md`、`docs/AI协作与交接日志.md`（§7 登记板 & §8 最新交接）、`docs/战斗设计讨论日志.md` 近期条目与 `docs/代码实现与验证记录.md` 末段，并先看 `git status`。
+- **收工前**：每次改动后必须运行无头测试回归，并同步更新 `docs/代码实现与验证记录.md`、`docs/战斗设计讨论日志.md`、`docs/AI协作与交接日志.md` 与 `README.md`（写清**干了什么、进行到哪、下一步干什么**），最后执行中文 `git commit`。
