@@ -87,7 +87,7 @@ func _run() -> void:
 	move(Vector2(420, 280))
 	move(Vector2(730, 280))
 	check(battle.boss_hp == 290 and battle.settlement_count == 1, "cooldown prevents rapid repeated settlements")
-	check(battle.player_weapon.tip == Vector2(730, 280), "cooldown does not stop blade following")
+	check(battle.player_weapon.tip.is_equal_approx(battle.clamp_tip(Vector2(730, 280))), "cooldown does not stop blade following")
 	check(battle.player_view.position == Vector2(576, 578), "body fixed")
 	slash()
 	check(battle.boss_hp == 280, "release allows next hit")

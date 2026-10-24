@@ -190,3 +190,72 @@ COMBAT_TESTS: 89 checks, 0 failures: []
 v0.2首版曾通过55项检查并完成三方向弹反；其中旧的无空间普通攻击、蓄力期被防住规则已被本轮v0.3替换，不能再作为当前玩法说明。
 
 项目执行起点没有Git仓库和游戏场景，`docs/baseline/project.godot.txt`记录最初配置。新增实现集中在scripts、scenes、data、tests；保留addons与.mcp-tools。当前新增的临时美术验证仅在内存使用，不改变正式场景资源。测试结束停止游戏，编辑器打开battle.tscn，方便F5开始。
+
+## D016 · 2026-10-24 · 1号模式角色移动、飞剑圆内范围与网格地图扩大
+
+### 做了什么 / 改动文件
+
+- [`scripts/battle_controller.gd`](../scripts/battle_controller.gd)：
+  - **角色移动（仅 mode 0「1 战斗」）**：新增 `@export var move_speed := 320.0`、`@export var player_map_margin := 48.0`。在 `_process` 中轮询 WASD / 方向键八向移动（斜向归一化），限制在 `map_rect.grow(-player_map_margin)` 内；暂停或胜负结算时不移动；`_input` 拦截 mode 0 下的方向键，防止切换顶部 GUI 按钮焦点。其他模式（2/3/4/5）不移动，`restart()` 或切换模式时角色回到初始位置 `(576, 578)`。
+  - **飞剑圆内范围（仅 mode 0）**：新增 `@export var sword_radius := 260.0` 与 `clamp_tip(world)`。鼠标世界坐标在角色周围 `sword_radius` 内时刀尖精确跟随鼠标；超出时贴在圆边、保持朝鼠标方向。地面绘制跟随角色的淡青色范围圆。
+  - **网格地图扩大与跟随相机**：新增 `@export var map_rect := Rect2(-1152, -768, 3456, 2304)`（原 1152×768 视口的 3×3 规模，带 48px 网格与外框线）及 `Camera2D`（`limit_*` 绑定 `map_rect`）。mode 0 下相机中心跟随 `player_view.position + Vector2(0, -194)`（开局取景 `(576, 384)` 与原版完全一致），其他模式固定在 `(576, 384)`。
+  - **屏幕固定 HUD 绘制层**：原 `_draw()` 中的三条血量/架势条与受击光环移至 `CanvasLayer` 下的 `HudOverlay`，避免相机移动时滚出屏幕；原地面装饰圆改为跟随 `player_view` 与 `boss_view`。
+- [`scripts/gesture_input.gd`](../scripts/gesture_input.gd)：
+  - 新增 `screen_to_world()`、`current_tip()`、`tip_filter` 与 `refresh_tip()`。
+  - **关键设计取舍**：手势采样 `samples` 保持在**屏幕坐标**，使挥刀/弹反的方向、距离、速度纯粹反映鼠标手势本身，不会因角色行走或相机滚动而混入位移；而可见刀尖与普通命中的扫掠线段 `motion_segment` 使用经相机变换与 `clamp_tip` 限制后的**世界坐标**。角色移动但鼠标不动时，`refresh_tip()` 仅更新视觉刀尖跟随，不触发 `moved` 信号，因此纯走位撞向 Boss 不会结算普通伤害。
+- [`tests/movement_tests.gd`](../tests/movement_tests.gd)、[`tests/movement_tests.tscn`](../tests/movement_tests.tscn)：新增 39 项针对 D016 的自动化检查。
+- [`tests/combat_tests.gd`](../tests/combat_tests.gd)、[`tests/interaction_tests.gd`](../tests/interaction_tests.gd)：各更新 1 处 mode 0 远点刀尖坐标断言为 `battle.clamp_tip(...)`（因 `(730, 280)` 与 `(250, 450)` 距玩家起点 `(576, 578)` 分别为 335px、350px，超过 `sword_radius = 260`）。
+
+### 验证方式与结果
+
+- `MOVEMENT_TESTS: 39 checks, 0 failures`（覆盖：开局位置/相机、八向移动与斜向归一化、四边地图边界夹取、飞剑圆内直跟与圆外贴边及方向保持、行走时持刀视觉跟随且不误伤、相机跟随与 `screen_to_world` 换算、远处空挥不中/走近命中/远处弹反仍有效、切换 2/3/4/5 模式复位且不限半径、暂停禁移动）。
+- `COMBAT_TESTS: 101 checks, 0 failures`
+- `PARRY_AB_TESTS: 41 checks, 0 failures`
+- `GEOBEAR_TESTS: 89 checks, 0 failures`
+- `DIRECTIONAL_TESTS: 34 checks, 0 failures`
+- 未验证项：命令行无头模式未生成有画面的运行截图（`docs/screenshots/d016-movement.png` 待有窗口渲染时补截）；真人 WASD + 鼠标同时操作的手感、移动速度 `320` 与飞剑半径 `260` 的实战舒适度待用户试玩确认。
+
+### 未解决问题与建议下一步
+
+- 当前 Boss 仍在原地按固定时间轴出招且攻击必中（按用户指示暂未加入 Boss 追击 AI 与走位闪避判定）。
+- 建议下一步：用户按 F5 在 1 号模式下试玩 WASD 移动 + 260px 飞剑圈手感；待额度充足或确认手感后，再接入 Boss 追击移动与攻击距离判定。
+
+## D017 · 2026-10-24 · 1号模式飞剑严格最大攻击判定范围与射程可视化
+
+### 做了什么 / 改动文件
+
+- [`scripts/blade_hit_test.gd`](../scripts/blade_hit_test.gd)：新增 `rect_overlaps_circle(rect, center, radius)` 与 `swept_hits_in_circle(...)`。在 1 号模式下严格保证：1）Boss 受击框必须与玩家的 `sword_radius` 圆相交；2）刀尖与向后延伸 110px 的刀根（`previous_base` / `current_base`）全部夹取在 `sword_radius` 圆内再做扫掠凸包碰撞，彻底杜绝刀尖贴圈边时刀身向外伸出圈外 110px 蹭到圈外 Boss 的情况。
+- [`scripts/battle_controller.gd`](../scripts/battle_controller.gd)：
+  - 新增 `is_boss_in_sword_range()` 与 `_ordinary_sweep_hits()`；mode 0 普通命中改调 `BladeHitTest.swept_hits_in_circle(...)`，弹反仍保持全屏手势判定不受空间距离限制，Boss 攻击仍全屏命中玩家。
+  - `_draw()` 在 mode 0 下同时画出玩家飞剑范围圆与 `boss_hurtbox()`：圈外时为半透明暖灰/暗青提示，一旦 Boss 受击框进入飞剑圆内，范围圆与 Boss 受击框同步高亮为亮青色，直观指示“已进入可攻击距离”。
+- [`tests/movement_tests.gd`](../tests/movement_tests.gd)：新增第 10 组检查（共 42 项检查），验证玩家距离 Boss 受击框底边 300px（大于 `sword_radius = 260` 但小于 `260 + blade_length = 370`）时挥刀不会靠刀身越界蹭伤，走近至 200px 时 `is_boss_in_sword_range()` 正常激活。
+
+### 验证方式与结果
+
+- `MOVEMENT_TESTS: 42 checks, 0 failures`
+- `COMBAT_TESTS: 101 checks, 0 failures`
+- 真人试玩手感与视觉可读性待用户按 F5 确认。
+
+## D018 · 2026-10-24 · 弹反双爪距离限制、Boss 追击 AI、玩家受击框与 B 严格反向定案
+
+### 做了什么 / 改动文件
+
+- [`scripts/battle_controller.gd`](../scripts/battle_controller.gd)：
+  - **弹反双爪受击框与距离限制（mode 0）**：新增 `boss_claw_hurtboxes()` 与 `boss_active_claw_hurtboxes()`，实时跟随几何熊左右爪关节（`claw_r`/`tip_r` 与 `claw_l`/`tip_l`）生成两个 `124×124` 的爪子判定框（并在地面绘制，进入飞剑圈且 Boss 蓄力时高亮为金色）。新增 `_parry_in_claw_range()`：mode 0 下必须满足**Boss 当前挥击爪（或双爪）判定框与玩家 `sword_radius` 飞剑圆相交**，且在窗口内做出 **B 严格反向**手势，才能触发弹反；站在远处圈外无法空挥弹反。
+  - **Boss 追击 AI（mode 0）**：新增 `move_boss(delta)`（默认 `boss_move_speed = 150.0`、`boss_standoff_offset = Vector2(0, -230)`、`boss_engage_distance = 250.0`）。Boss 在 `idle` 阶段自动向玩家上方的近身对峙位置移动；当玩家跑远超出交战距离时，Boss 暂不起手新招式（`boss.can_start_attack = false`），追近后再起手。
+  - **玩家受击框与走位闪避（mode 0）**：新增 `player_hurtbox()`（`Rect2(-32, -56, 64, 96)`，地面淡青框显示）与 `_boss_attack_hits_player()`。Boss 蓄力结束出击时刻，检查 `boss_attack_reach_box()`（融合当前挥动爪范围）是否与 `player_hurtbox()` 相交——相交才扣血，玩家提前走位跑出爪击范围则提示“闪避成功！走位躲开了 Boss 爪击”。
+  - **默认弹反规则设为 B 严格反向**：`training_rule` 默认值改为 `1`（B 严格反向），与正式战斗规则一致；5 号方向手势代码与 4 号木桩 A/B 实验完整保留。
+- [`scripts/boss_controller.gd`](../scripts/boss_controller.gd)：新增 `can_start_attack := true` 门控开关，供 mode 0 下 Boss 远距离追击时推迟进入 `windup`。
+- [`tests/movement_tests.gd`](../tests/movement_tests.gd)：更新并扩充至 49 项检查，验证：远距离爪子在飞剑圈外时反向划动无法弹反、走近使爪子进圈后反向划动成功弹反、Boss 在 `idle` 下追击玩家、远距离不空放新招、玩家走位脱离爪击范围可无伤闪避、默认 `training_rule == 1`（B 严格反向）。
+
+### 验证方式与结果
+
+- `MOVEMENT_TESTS: 49 checks, 0 failures`
+- `COMBAT_TESTS: 101 checks, 0 failures`
+- `PARRY_AB_TESTS: 41 checks, 0 failures`
+- `GEOBEAR_TESTS: 89 checks, 0 failures`
+- `DIRECTIONAL_TESTS: 34 checks, 0 failures`
+- 合计 **314 项检查，0 失败**。
+
+
+

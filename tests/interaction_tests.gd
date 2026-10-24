@@ -71,7 +71,7 @@ func run() -> void:
  var m := InputEventMouseMotion.new(); m.position=Vector2(250,450)
  Input.parse_input_event(m)
  await create_timer(0.03).timeout
- check(b.player_weapon.tip.distance_to(Vector2(250,450))<1,'original tip follows actual pointer')
+ check(b.player_weapon.tip.distance_to(b.clamp_tip(Vector2(250,450)))<1,'original tip follows actual pointer')
  await mouse(Vector2(250,450),false)
  await key(KEY_ESCAPE)
  check(b.paused and not b.gesture.enabled,'esc pauses')

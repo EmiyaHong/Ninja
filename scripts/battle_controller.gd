@@ -8,7 +8,7 @@ const ParryTrainer = preload("res://scripts/parry_trainer.gd")
 
 @export_enum("战斗", "自由练刀", "下劈训练", "木桩测试", "方向手势") var initial_mode := 0
 @export var initial_dummy_parry_training := false
-@export_enum("A 双向接招", "B 严格反向") var training_rule := 0
+@export_enum("A 双向接招", "B 严格反向") var training_rule := 1
 @export_enum("同向三连 →→→", "交替三连 →←→") var training_pattern := 0
 @export_group("Replaceable presentation scenes")
 @export var player_view_scene: PackedScene = preload("res://scenes/player_view.tscn")
@@ -16,6 +16,19 @@ const ParryTrainer = preload("res://scripts/parry_trainer.gd")
 @export var player_weapon_scene: PackedScene = preload("res://scenes/player_weapon.tscn")
 @export_group("Gameplay hurtbox, independent of art")
 @export var boss_hurtbox_local := Rect2(-70, -100, 140, 214)
+@export var player_hurtbox_local := Rect2(-32, -56, 64, 96)
+@export var boss_claw_box_size := Vector2(124, 124)
+@export var boss_attack_reach_local := Rect2(-220, -40, 440, 380)
+@export_group("Mode 1 movement and sword range (D016/D018)")
+@export var move_speed := 320.0
+@export var sword_radius := 260.0
+@export var boss_move_speed := 150.0
+@export var boss_engage_distance := 250.0
+@export var boss_standoff_offset := Vector2(0, -230)
+@export var map_rect := Rect2(-1152, -768, 3456, 2304)
+@export var player_map_margin := 48.0
+@export var camera_offset := Vector2(0, -194)
+const DEFAULT_CAMERA_CENTER := Vector2(576, 384)
 const Directional = preload("res://scripts/directional_combat.gd")
 var directional: Node
 var original_tuning: Resource
@@ -56,6 +69,10 @@ var parry_count := 0
 var hit_count := 0
 var last_damage := 0.0
 var last_posture_damage := 0.0
+var player_start := Vector2(576, 578)
+var boss_start := Vector2(576, 286)
+var camera: Camera2D
+var hud_overlay: Node2D
 
 func now() -> float:
 	return (pause_started if paused else Time.get_ticks_usec() / 1000000.0) - clock_offset
@@ -66,11 +83,23 @@ func _ready() -> void:
 	boss_view = _existing_or_create("BossBody", boss_view_scene, Vector2(576, 286))
 	player_weapon = _existing_or_create("PlayerWeapon", player_weapon_scene, Vector2.ZERO)
 	player_weapon.z_index = 20
+	player_start = player_view.position
+	boss_start = boss_view.position
+	camera = Camera2D.new()
+	camera.name = "Camera"
+	camera.position = DEFAULT_CAMERA_CENTER
+	camera.limit_left = int(map_rect.position.x)
+	camera.limit_top = int(map_rect.position.y)
+	camera.limit_right = int(map_rect.end.x)
+	camera.limit_bottom = int(map_rect.end.y)
+	add_child(camera)
+	camera.make_current()
 	gesture = Gesture.new()
 	gesture.name = "GestureInput"
 	gesture.weapon = player_weapon
 	gesture.rest = player_view.position + Vector2(84, -13)
 	gesture.clock = now
+	gesture.tip_filter = clamp_tip
 	gesture.moved.connect(_settle_motion)
 	add_child(gesture)
 	boss = Boss.new()
@@ -104,6 +133,11 @@ func _existing_or_create(node_name: String, scene: PackedScene, default_position
 func _build_hud() -> void:
 	var canvas := CanvasLayer.new()
 	add_child(canvas)
+	# Bars and hit ring are screen-fixed so the follow camera cannot scroll them away.
+	hud_overlay = Node2D.new()
+	hud_overlay.name = "HudOverlay"
+	hud_overlay.draw.connect(_draw_hud_overlay)
+	canvas.add_child(hud_overlay)
 	var font := SystemFont.new()
 	font.font_names = PackedStringArray(["Microsoft YaHei", "Noto Sans CJK SC"])
 	var root := Control.new()
@@ -221,10 +255,15 @@ func restart() -> void:
 	last_damage = 0.0
 	last_posture_damage = 0.0
 	effect = 0.0
+	player_view.position = player_start
+	boss_view.position = boss_start
+	gesture.rest = player_view.position + Vector2(84, -13)
+	_update_camera()
 	gesture.enabled = true
 	gesture.reset()
 	boss.fixed_down = mode == 2
 	boss.attacks_enabled = mode != 1 and mode != 3
+	boss.can_start_attack = true
 	boss.reset(now())
 	training.reset(now(), training_rule, training_pattern)
 	boss_view.flash = 0.0
@@ -233,7 +272,53 @@ func restart() -> void:
 	_update_boss_weapon()
 	_message("按住左键持续挥刀，可连续命中与弹反。", Color("76e9ed"))
 	_refresh_hud()
+	_redraw()
+
+func _redraw() -> void:
 	queue_redraw()
+	if is_instance_valid(hud_overlay): hud_overlay.queue_redraw()
+
+func movement_enabled() -> bool:
+	return mode == 0
+
+## Visible blade tip limit: within sword_radius of the body in mode 0 only.
+func clamp_tip(world: Vector2) -> Vector2:
+	if not movement_enabled():
+		return world
+	var offset := world - player_view.position
+	if offset.length() <= sword_radius:
+		return world
+	return player_view.position + offset.normalized() * sword_radius
+
+func movement_input() -> Vector2:
+	var input := Vector2.ZERO
+	if _key_down(KEY_D) or _key_down(KEY_RIGHT): input.x += 1
+	if _key_down(KEY_A) or _key_down(KEY_LEFT): input.x -= 1
+	if _key_down(KEY_S) or _key_down(KEY_DOWN): input.y += 1
+	if _key_down(KEY_W) or _key_down(KEY_UP): input.y -= 1
+	return input
+
+func _key_down(code: Key) -> bool:
+	return Input.is_physical_key_pressed(code) or Input.is_key_pressed(code)
+
+## Eight-way movement; diagonal is normalized. Callers ensure not paused/ended.
+func move_player(input: Vector2, delta: float) -> void:
+	if not movement_enabled() or input.is_zero_approx():
+		return
+	var area := map_rect.grow(-player_map_margin)
+	player_view.position = (player_view.position + input.normalized() * move_speed * delta).clamp(area.position, area.end)
+	gesture.rest = player_view.position + Vector2(84, -13)
+	_update_camera()
+	if gesture.held:
+		gesture.refresh_tip()
+	elif gesture.direct_control:
+		player_weapon.follow(gesture.rest, Vector2.ZERO, false)
+
+func _update_camera() -> void:
+	if not is_instance_valid(camera): return
+	camera.position = player_view.position + camera_offset if movement_enabled() else DEFAULT_CAMERA_CENTER
+	if camera.is_inside_tree():
+		camera.force_update_scroll()
 
 func toggle_pause() -> void:
 	if paused:
@@ -254,6 +339,12 @@ func _notification(what: int) -> void:
 			toggle_pause()
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventKey and movement_enabled():
+		# Movement is polled in _process; keep arrow keys from moving GUI button focus.
+		var move_code: int = event.physical_keycode if event.physical_keycode != 0 else event.keycode
+		if move_code in [KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT]:
+			get_viewport().set_input_as_handled()
+			return
 	if event is InputEventKey and event.pressed and not event.echo:
 		# Global game commands precede GUI focus and use keyboard position under IME.
 		if event.alt_pressed or event.ctrl_pressed or event.meta_pressed: return
@@ -289,25 +380,31 @@ func _process(delta: float) -> void:
 		_update_training_weapon()
 		effect = maxf(0.0, effect - delta)
 		_refresh_hud()
-		queue_redraw()
+		_redraw()
 		return
+	if movement_enabled():
+		move_player(movement_input(), delta)
+		move_boss(delta)
 	# Mouse events settle immediately, before this frame's impact deadline.
 	if mode != 1:
 		var transition: String = boss.step(now())
 		if transition == "hit":
-			player_hp = maxf(0, player_hp - tuning.boss_damage)
-			hit_count += 1
-			player_view.flash = 0.25
-			_message("受伤！下次在金色窗口内反向划。", Color("fa8d8d"))
-			if player_hp <= 0:
-				_finish("失败 · 按 R 重开")
+			if _boss_attack_hits_player():
+				player_hp = maxf(0, player_hp - tuning.boss_damage)
+				hit_count += 1
+				player_view.flash = 0.25
+				_message("受伤！下次在爪子范围内反向划弹反，或走位躲开。", Color("fa8d8d"))
+				if player_hp <= 0:
+					_finish("失败 · 按 R 重开")
+			else:
+				_message("闪避成功！走位躲开了 Boss 爪击。", Color("76e9ed"))
 		elif transition == "restore":
 			posture = tuning.boss_posture
 	if mode == 4 and result.is_empty(): directional.step(now())
 	_update_boss_weapon()
 	effect = maxf(0.0, effect - delta)
 	_refresh_hud()
-	queue_redraw()
+	_redraw()
 
 func _valid_motion(motion: Dictionary) -> bool:
 	var short_side := minf(get_viewport_rect().size.x, get_viewport_rect().size.y)
@@ -315,6 +412,90 @@ func _valid_motion(motion: Dictionary) -> bool:
 
 func boss_hurtbox() -> Rect2:
 	return Rect2(boss_view.position + boss_hurtbox_local.position, boss_hurtbox_local.size)
+
+func player_hurtbox() -> Rect2:
+	return Rect2(player_view.position + player_hurtbox_local.position, player_hurtbox_local.size)
+
+## Returns the two claw hurtboxes of the Boss (right claw and left claw).
+func boss_claw_hurtboxes() -> Array[Rect2]:
+	var visual := _boss_rig()
+	var half := boss_claw_box_size * 0.5
+	if visual != null and is_instance_valid(visual.tip_r) and is_instance_valid(visual.tip_l):
+		var center_r: Vector2 = 0.5 * (visual.claw_r.global_position + visual.tip_r.global_position)
+		var center_l: Vector2 = 0.5 * (visual.claw_l.global_position + visual.tip_l.global_position)
+		return [Rect2(center_r - half, boss_claw_box_size), Rect2(center_l - half, boss_claw_box_size)]
+	return [
+		Rect2(boss_view.position + Vector2(-95, 25) - half, boss_claw_box_size),
+		Rect2(boss_view.position + Vector2(95, 25) - half, boss_claw_box_size),
+	]
+
+## Returns the active claw hurtboxes for the current incoming attack direction.
+func boss_active_claw_hurtboxes() -> Array[Rect2]:
+	var boxes := boss_claw_hurtboxes()
+	if boss.direction == Vector2.RIGHT:
+		return [boxes[0]]
+	elif boss.direction == Vector2.LEFT:
+		return [boxes[1]]
+	return boxes
+
+## True when at least one Boss claw hurtbox overlaps the player's sword_radius circle.
+func is_boss_claw_in_sword_range() -> bool:
+	_update_boss_weapon()
+	for box in boss_claw_hurtboxes():
+		if BladeHitTest.rect_overlaps_circle(box, player_view.position, sword_radius):
+			return true
+	return false
+
+## Mode 0 requires Boss's active claw hurtbox (or either claw) to be inside the player's sword_radius
+## in order to parry — the player cannot parry from far away out of claw reach.
+func _parry_in_claw_range() -> bool:
+	if not movement_enabled():
+		return true
+	_update_boss_weapon()
+	for box in boss_active_claw_hurtboxes():
+		if BladeHitTest.rect_overlaps_circle(box, player_view.position, sword_radius):
+			return true
+	return is_boss_claw_in_sword_range()
+
+## Boss chase AI (mode 0): pursues a standoff position above the player during idle,
+## and only starts windup when within engage range of the player.
+func move_boss(delta: float) -> void:
+	if not movement_enabled() or not is_instance_valid(boss):
+		return
+	var dist_to_player := boss_view.position.distance_to(player_view.position)
+	boss.can_start_attack = dist_to_player <= boss_engage_distance + 80.0 or is_boss_in_sword_range()
+	if boss.phase != "idle":
+		return
+	var target_pos := player_view.position + boss_standoff_offset
+	var to_target := target_pos - boss_view.position
+	if to_target.length() <= 12.0:
+		return
+	var area := map_rect.grow(-player_map_margin - 40.0)
+	boss_view.position = (boss_view.position + to_target.normalized() * boss_move_speed * delta).clamp(area.position, area.end)
+
+## Boss strike reach box in world space for the current attack direction.
+func boss_attack_reach_box() -> Rect2:
+	var rect := Rect2(boss_view.position + boss_attack_reach_local.position, boss_attack_reach_local.size)
+	for box in boss_active_claw_hurtboxes():
+		rect = rect.merge(box.grow(24.0))
+	return rect
+
+## Mode 0 checks whether the player's hurtbox is inside the Boss's claw strike reach at impact.
+func _boss_attack_hits_player() -> bool:
+	if not movement_enabled():
+		return true
+	_update_boss_weapon()
+	return boss_attack_reach_box().intersects(player_hurtbox())
+
+## True when the boss hurtbox intersects the player's sword_radius circle.
+func is_boss_in_sword_range() -> bool:
+	return BladeHitTest.rect_overlaps_circle(boss_hurtbox(), player_view.position, sword_radius)
+
+## Mode 0 strictly limits ordinary attack judgment to sword_radius; other modes use full-screen sweep.
+func _ordinary_sweep_hits() -> bool:
+	if movement_enabled():
+		return BladeHitTest.swept_hits_in_circle(gesture.motion_segment, player_weapon.blade_length, player_weapon.blade_width, boss_hurtbox(), player_view.position, sword_radius)
+	return BladeHitTest.swept_hits(gesture.motion_segment, player_weapon.blade_length, player_weapon.blade_width, boss_hurtbox())
 
 func _settle_motion(at: float) -> void:
 	if mode == 1 or paused or not gesture.held or not result.is_empty():
@@ -339,10 +520,10 @@ func _settle_motion(at: float) -> void:
 	var parried := false
 	if boss.phase == "windup" and not boss.resolved and at >= boss.deadline - tuning.parry_window and at <= boss.deadline:
 		var fresh: Dictionary = gesture.local_motion(at, tuning.local_window, maxf(boss.deadline - tuning.parry_window, last_action_at))
-		if _valid_motion(fresh):
-			parried = fresh.direction.dot(-boss.direction) >= cos(deg_to_rad(tuning.direction_tolerance_degrees))
-	# Empty swings do not start a cooldown. Parry remains spatially unrestricted.
-	if not parried and not BladeHitTest.swept_hits(gesture.motion_segment, player_weapon.blade_length, player_weapon.blade_width, boss_hurtbox()):
+		if _valid_motion(fresh) and fresh.direction.dot(-boss.direction) >= cos(deg_to_rad(tuning.direction_tolerance_degrees)):
+			parried = _parry_in_claw_range()
+	# Empty swings do not start a cooldown.
+	if not parried and not _ordinary_sweep_hits():
 		return
 	_resolve_attack(at, parried)
 
@@ -376,7 +557,7 @@ func _resolve_attack(at: float, parried: bool) -> void:
 		boss.interrupt(at, true)
 		_message("破防！%.1f 秒内攻击造成 %.1f 倍伤害" % [tuning.broken_duration, tuning.broken_multiplier], Color("c2a0ff"))
 	_refresh_hud()
-	queue_redraw()
+	_redraw()
 
 func _finish(text: String) -> void:
 	directional.cancel()
@@ -500,22 +681,45 @@ func _update_training_weapon() -> void:
 	visual.animate(state, training.direction_for(index), remaining, duration, minf(0.16, training.tuning.parry_window), at, "training_%d_%d" % [training.group_number, index])
 
 func _draw() -> void:
-	for x in range(0, 1152, 48):
-		draw_line(Vector2(x, 160), Vector2(x, 640), Color("192838"))
-	for y in range(160, 641, 48):
-		draw_line(Vector2(0, y), Vector2(1152, y), Color("192838"))
-	draw_arc(Vector2(576, 575), 83, 0, TAU, 64, Color("29434d"), 2)
-	draw_arc(Vector2(576, 285), 106, 0, TAU, 64, Color("533b42"), 2)
+	# D016: whole-map grid with a clear boundary (no art yet).
+	var grid_color := Color("192838")
+	var x := map_rect.position.x
+	while x <= map_rect.end.x:
+		draw_line(Vector2(x, map_rect.position.y), Vector2(x, map_rect.end.y), grid_color)
+		x += 48.0
+	var y := map_rect.position.y
+	while y <= map_rect.end.y:
+		draw_line(Vector2(map_rect.position.x, y), Vector2(map_rect.end.x, y), grid_color)
+		y += 48.0
+	draw_rect(map_rect, Color("63808f"), false, 4)
 	if not is_instance_valid(boss):
 		return
+	# Ground rings follow their actors (same offsets as the former fixed rings).
+	draw_arc(player_view.position + Vector2(0, -3), 83, 0, TAU, 64, Color("29434d"), 2)
+	draw_arc(boss_view.position + Vector2(0, -7), 106, 0, TAU, 64, Color("533b42"), 2)
+	if movement_enabled():
+		var in_range := is_boss_in_sword_range()
+		var claw_in_range := is_boss_claw_in_sword_range()
+		var ring_color := Color(0.46, 0.91, 0.93, 0.42) if (in_range or claw_in_range) else Color(0.46, 0.91, 0.93, 0.16)
+		var box_color := Color(0.46, 0.91, 0.93, 0.78) if in_range else Color(0.86, 0.68, 0.45, 0.35)
+		draw_arc(player_view.position, sword_radius, 0, TAU, 96, ring_color, 2.5 if (in_range or claw_in_range) else 2.0)
+		draw_rect(boss_hurtbox(), box_color, false, 2.0)
+		draw_rect(player_hurtbox(), Color(0.46, 0.91, 0.93, 0.55), false, 1.5)
+		var claw_color := Color(1.0, 0.88, 0.60, 0.85) if (boss.phase == "windup" and claw_in_range) else (Color(0.95, 0.65, 0.56, 0.65) if claw_in_range else Color(0.95, 0.65, 0.56, 0.28))
+		for claw_box in boss_claw_hurtboxes():
+			draw_rect(claw_box, claw_color, false, 2.0)
 	if mode == 3 and not is_parry_training():
 		draw_rect(boss_hurtbox(), Color("dcad72"), false, 2)
+
+func _draw_hud_overlay() -> void:
+	if not is_instance_valid(boss):
+		return
 	_draw_bar(Vector2(40, 88), 310, player_hp / tuning.player_health, Color("76e9ed"))
 	_draw_bar(Vector2(420, 88), 310, boss_hp / tuning.boss_health, Color("f1a58e"))
 	_draw_bar(Vector2(790, 88), 310, posture / tuning.boss_posture, Color("ffe09a"))
 	if effect > 0:
-		draw_arc(Vector2(576, 440), 32 + (0.22 - effect) * 180, 0, TAU, 32, Color(effect_color, effect / 0.22), 4)
+		hud_overlay.draw_arc(Vector2(576, 440), 32 + (0.22 - effect) * 180, 0, TAU, 32, Color(effect_color, effect / 0.22), 4)
 
 func _draw_bar(at: Vector2, width: float, ratio: float, color: Color) -> void:
-	draw_rect(Rect2(at, Vector2(width, 8)), Color("344154"))
-	draw_rect(Rect2(at, Vector2(width * clampf(ratio, 0, 1), 8)), color)
+	hud_overlay.draw_rect(Rect2(at, Vector2(width, 8)), Color("344154"))
+	hud_overlay.draw_rect(Rect2(at, Vector2(width * clampf(ratio, 0, 1), 8)), color)

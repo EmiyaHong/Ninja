@@ -10,6 +10,7 @@ var attack_index := -1
 var fixed_down := false
 var random_attacks := false
 var attacks_enabled := true
+var can_start_attack := true
 var tuning: Resource
 
 func reset(at: float) -> void:
@@ -26,7 +27,7 @@ func step(at: float) -> String:
 		return ""
 	match phase:
 		"idle":
-			if not attacks_enabled:
+			if not attacks_enabled or not can_start_attack:
 				return ""
 			attack_index = (attack_index + 1) % 3
 			var index := randi_range(0, 2) if random_attacks else attack_index
