@@ -246,16 +246,22 @@ v0.2首版曾通过55项检查并完成三方向弹反；其中旧的无空间�
   - **玩家受击框与走位闪避（mode 0）**：新增 `player_hurtbox()`（`Rect2(-32, -56, 64, 96)`，地面淡青框显示）与 `_boss_attack_hits_player()`。Boss 蓄力结束出击时刻，检查 `boss_attack_reach_box()`（融合当前挥动爪范围）是否与 `player_hurtbox()` 相交——相交才扣血，玩家提前走位跑出爪击范围则提示“闪避成功！走位躲开了 Boss 爪击”。
   - **默认弹反规则设为 B 严格反向**：`training_rule` 默认值改为 `1`（B 严格反向），与正式战斗规则一致；5 号方向手势代码与 4 号木桩 A/B 实验完整保留。
 - [`scripts/boss_controller.gd`](../scripts/boss_controller.gd)：新增 `can_start_attack := true` 门控开关，供 mode 0 下 Boss 远距离追击时推迟进入 `windup`。
-- [`tests/movement_tests.gd`](../tests/movement_tests.gd)：更新并扩充至 49 项检查，验证：远距离爪子在飞剑圈外时反向划动无法弹反、走近使爪子进圈后反向划动成功弹反、Boss 在 `idle` 下追击玩家、远距离不空放新招、玩家走位脱离爪击范围可无伤闪避、默认 `training_rule == 1`（B 严格反向）。
+- [`tests/movement_tests.gd`](../tests/movement_tests.gd)：更新并扩充至 51 项检查，验证：远距离爪子在飞剑圈外时反向划动无法弹反、走近使爪子进圈后反向划动成功弹反、Boss 在 `idle` 下追击玩家、远距离不空放新招、玩家走位脱离爪击范围可无伤闪避、默认 `training_rule == 1`（B 严格反向）。
 
 ### 验证方式与结果
 
-- `MOVEMENT_TESTS: 49 checks, 0 failures`
+- `MOVEMENT_TESTS: 51 checks, 0 failures`
 - `COMBAT_TESTS: 101 checks, 0 failures`
 - `PARRY_AB_TESTS: 41 checks, 0 failures`
 - `GEOBEAR_TESTS: 89 checks, 0 failures`
 - `DIRECTIONAL_TESTS: 34 checks, 0 failures`
-- 合计 **314 项检查，0 失败**。
+- 合计 **316 项检查，0 失败**。
+
+### Git 与 GitHub 远程备份状态（2026-10-24）
+
+- 本地提交：`4d9161b`（D016–D018 功能与测试）、`6a0fac5`（新增 `README.md` 与双 Agent 四件套收工同步规范）。
+- GitHub 远程：`origin` 已绑定为 `ssh://git@ssh.github.com:443/EmiyaHong/Ninja.git`（使用 SSH 443 端口免密推送），`main` 分支与 `baseline-2026-10-23` 标签已完整推送到 `https://github.com/EmiyaHong/Ninja`。
+
 
 
 

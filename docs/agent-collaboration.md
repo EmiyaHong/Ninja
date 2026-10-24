@@ -97,12 +97,13 @@
 | 2026-10-24 | Antigravity 主聊天（验收）+ 执行子 agent | D016：1 号模式角色移动、飞剑圆内范围、网格地图扩大 | `scripts/battle_controller.gd`、`scripts/gesture_input.gd`、`tests/movement_tests.*`、`tests/combat_tests.gd`、`tests/interaction_tests.gd`、`docs/implementation-status.md`、`docs/design-journal.md` | 完成（已实现待试玩）；验证：movement 39/0、combat 101/0、parry_ab 41/0、geobear 89/0、directional 34/0（共 304 项 0 失败）；已释放全部文件占用 |
 | 2026-10-24 | Antigravity | D017：1 号模式飞剑圈严格最大攻击判定范围 + 受击框/进圈高亮可视化 | `scripts/blade_hit_test.gd`、`scripts/battle_controller.gd`、`tests/movement_tests.gd`、`docs/design-journal.md`、`docs/implementation-status.md` | 完成（已实现待试玩）；验证：movement 42/0、combat 101/0；已释放全部文件占用 |
 | 2026-10-24 | Antigravity | D018：弹反距离限制（双爪判定框进飞剑圈 + 挥刀触爪）、Boss 追击 AI、玩家受击框与爪击碰撞、确认 B 严格反向、设计思维导图 | `scripts/battle_controller.gd`、`scripts/boss_controller.gd`、`tests/movement_tests.gd`、`docs/design-journal.md`、`docs/implementation-status.md` | 完成（已实现待试玩）；验证：movement 51/0、combat 101/0、parry_ab 41/0、geobear 89/0、directional 34/0（共 316 项 0 失败）；已释放全部文件占用 |
+| 2026-10-24 | Antigravity | 建立 GitHub 远程仓库连接（SSH 443 端口免密推送）与首页 `README.md`、四件套收工同步规范 | `README.md`、`AGENTS.md`、`docs/agent-collaboration.md`、`docs/implementation-status.md` | 完成；`main` 与 `baseline-2026-10-23` 已推送至 `https://github.com/EmiyaHong/Ninja` |
 
 ## 8. 致 Codex 的最新交接摘要（2026-10-24，Codex 无额度期间 Antigravity 完成项）
 
 Codex 接手时请直接阅读本节，并对照 `docs/design-journal.md`（D016–D018）与 `docs/implementation-status.md`（末尾 D016–D018 章节）：
 
-1. **我们在你无额度期间做了什么（D016 → D018）**：
+1. **我们在你无额度期间做了什么（D016 → D018 + GitHub 远程绑定）**：
    - **D016（1 号模式角色移动 + 飞剑圆 + 3×3 网格地图）**：
      - 在 `scripts/battle_controller.gd` 仅针对 `mode == 0`（按键 1「曲线挥刀 · 战斗」）加入 WASD/方向键八向移动（`move_speed = 320.0`）、地图扩大为 `Rect2(-1152, -768, 3456, 2304)` 网格、跟随 `Camera2D`（开局取景 `(576, 384)` 不变），并将血条/架势条/受击光环移到 `CanvasLayer` 下的 `HudOverlay` 固定在屏幕。
      - 在 `scripts/gesture_input.gd` 将手势采样保留为屏幕坐标（避免走路/镜头滚动污染手势方向与速度），而可见刀尖与扫掠线段转为相机世界坐标并经 `clamp_tip` 限制在玩家周围 `sword_radius = 260.0` 圆内。
@@ -114,13 +115,16 @@ Codex 接手时请直接阅读本节，并对照 `docs/design-journal.md`（D016
      - **Boss 追击 AI**：Boss 在 `idle` 阶段以 `boss_move_speed = 150.0` 追向玩家上方对峙点 `player_view.position + Vector2(0, -230)`；玩家跑远超出交战距离时 `boss.can_start_attack = false`，追近后再蓄力出招。
      - **玩家受击框与走位闪避**：新增 `player_hurtbox()`（`64×96`）与 `_boss_attack_hits_player()`，Boss 落爪时刻若玩家已走位跑出 `boss_attack_reach_box()` 则无伤闪避。
      - **用户设计拍板**：正式选定 **B 严格反向**（`training_rule` 默认值已改为 `1`）；5 号方向手势（`directional_combat.gd`）的设计目的明确为“限制玩家不能永远在远处安全打击”，代码完整保留供后续收敛统一战斗风格；已在 `docs/design-journal.md` D018 绘制 Mermaid 思维导图。
+   - **GitHub 远程仓库与免密推送已就绪**：
+     - 远程 `origin` 已绑定为 `ssh://git@ssh.github.com:443/EmiyaHong/Ninja.git`（已配置 `core.sshCommand = "ssh -p 443 -o StrictHostKeyChecking=accept-new"` 绕过本地代理对 22 端口的拦截），`main` 分支与 `baseline-2026-10-23` 标签均已成功推送。
+     - 新增了根目录 `README.md`，并在 `AGENTS.md` 固化了每次收工同步更新「四件套文档」（`implementation-status.md`、`design-journal.md`、`agent-collaboration.md`、`README.md`）的规范。
 2. **新增与修改的测试（全部 0 失败，共 316 项）**：
    - 新增 `tests/movement_tests.gd` + `tests/movement_tests.tscn`：**51 checks, 0 failures**
    - `tests/combat_tests.tscn`：**101 checks, 0 failures**（仅将第 90 行远点刀尖坐标断言改为 `battle.clamp_tip(Vector2(730, 280))`）
    - `tests/parry_ab_tests.tscn`：**41 checks, 0 failures**
    - `tests/geobear_tests.tscn`：**89 checks, 0 failures**
    - `tests/directional_combat_tests.tscn`：**34 checks, 0 failures**
-3. **当前未提交改动与建议下一步**：
-   - 未执行 `git commit`（保留用户对提交节奏的控制；用户原有的 `data/combat_tuning.tres` 调试参数、美术、刀光均完好未动）。
+3. **当前 Git 状态与建议下一步**：
+   - 本地 `main` 与远程 `origin/main` 已完全同步且工作区干净（用户原有的 `data/combat_tuning.tres` 调试参数、美术、刀光均完好未动）。
    - 下一步待用户在编辑器内按 `F5` 真人试玩 1 号模式（WASD 移动 + 熊追人 + 双爪进圈弹反/走位闪避），根据手感反馈调整移速/半径，或推进 `docs/demo-roadmap.md` 阶段 2（Boss 连段招式表编排）。
 
